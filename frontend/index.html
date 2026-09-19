@@ -9,158 +9,524 @@
 :root{--paper:#EEF1F4;--ink:#101C28;--line:#C9D2DB;--red:#D7263D;--amber:#E8A317;--muted:#5B6B7A}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,sans-serif}
-h1,h2,.big{font-family:'Bricolage Grotesque',system-ui,sans-serif}
-header{padding:20px 28px;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
-h1{margin:0;font-size:30px;font-weight:800}
-header p{margin:0;color:var(--muted)}
-h2{margin:0 0 10px;font-size:18px;font-weight:500}
-main{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:20px;padding:0 28px 28px}
-section{display:flex;flex-direction:column;gap:20px}
-@media(max-width:820px){main{grid-template-columns:1fr;padding:0 16px 16px}}
-.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;transition:background .4s,color .4s}
+h1,h2,.brand,#score{font-family:'Bricolage Grotesque',system-ui,sans-serif}
+h1{margin:0;font-size:30px;font-weight:800} h2{margin:0 0 10px;font-size:18px;font-weight:500}
+.sub{margin:0 0 18px;color:var(--muted)}
+
+/* landing page */
+#side,#app{display:none}
+body.app #side,body.app #app{display:block}
+body.app #landing{display:none}
+#landing{background:var(--ink);color:#fff}
+.hero{min-height:86vh;display:flex;flex-direction:column;justify-content:center;padding:60px 8vw;max-width:960px}
+.kicker{color:#9FB0BF;font-size:15px;margin:0 0 14px}
+.hero h1{font-size:clamp(32px,5.6vw,56px);line-height:1.06;margin:0 0 20px;max-width:15ch}
+.lead{font-size:18px;line-height:1.6;color:#C9D2DB;max-width:54ch;margin:0 0 30px}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+#landing button.primary{background:var(--red);border-color:var(--red);padding:14px 22px;font-size:16px}
+#landing button.ghost2{background:transparent;border:1px solid #45566a;color:#fff;padding:14px 20px}
+.trust{margin-top:28px;color:#8296a6;font-size:14px;max-width:52ch}
+.trust b{color:#fff}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:50px 8vw;background:var(--paper);color:var(--ink)}
+.step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px}
+.step b{font-size:26px;font-family:'Bricolage Grotesque',system-ui,sans-serif}
+.step h3{margin:12px 0 6px;font-size:17px}
+.step p{margin:0;color:var(--muted);font-size:14.5px}
+.statstrip{display:flex;gap:36px;flex-wrap:wrap;padding:28px 8vw;background:#0B141C}
+.statstrip div b{display:block;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:32px}
+.statstrip div span{color:#8296a6;font-size:13px}
+.landfoot{padding:22px 8vw 36px;color:var(--muted);font-size:13px;background:var(--paper);border-top:1px solid var(--line)}
+@media(max-width:820px){.steps{grid-template-columns:1fr}.statstrip{gap:24px}}
+
+/* sliding sidebar */
+#side{position:fixed;inset:0 auto 0 0;width:230px;background:var(--ink);color:#fff;padding:14px 10px;overflow:hidden;z-index:5;transition:width .3s}
+body.min #side{width:64px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;line-height:1.1;margin-bottom:20px;white-space:nowrap}
+#side button{display:flex;align-items:center;gap:12px;width:100%;padding:11px 14px;background:none;border:0;border-radius:8px;color:#cfd8e0;cursor:pointer;font:inherit;text-align:left;white-space:nowrap}
+#side button:hover{background:rgba(255,255,255,.1)}
+#side .tabbtn.on{background:#fff;color:var(--ink)}
+#side i{font-style:normal;width:20px;text-align:center;flex:none}
+.lbl{transition:opacity .2s} body.min .lbl{opacity:0}
+#app{margin-left:230px;padding:24px 28px;transition:margin .3s}
+body.min #app{margin-left:64px}
+.tab{display:none}.tab.on{display:block;animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+/* live tab */
+.grid{display:grid;grid-template-columns:minmax(300px,400px) 1fr;gap:20px}
+.col{display:flex;flex-direction:column;gap:20px;min-width:0}
+@media(max-width:900px){.grid{grid-template-columns:1fr}#app{padding:18px 14px}}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;transition:background .4s,color .4s,border-color .4s}
 .card.warn{border-color:var(--amber);border-width:2px}
 .card.alert{background:var(--red);color:#fff;border-color:var(--red);animation:pulse 1s 3}
 @keyframes pulse{50%{box-shadow:0 0 0 14px rgba(215,38,61,.25)}}
-@media(prefers-reduced-motion:reduce){.card.alert{animation:none}}
-.big{font-size:96px;font-weight:800;line-height:1;margin:4px 0}
-#label{font-size:20px;font-weight:500}
-.chip{display:inline-block;padding:2px 10px;margin:8px 6px 0 0;border-radius:99px;background:rgba(0,0,0,.08);font-size:14px}
+@media(prefers-reduced-motion:reduce){.card.alert,.tab.on{animation:none}}
+.gauge{position:relative;width:190px;height:190px;margin:0 auto}
+.gauge svg{width:100%;height:100%}
+.gauge circle{fill:none;stroke-width:9;stroke-linecap:round}
+.track{stroke:rgba(128,128,128,.22)}
+#arc{transition:stroke .3s}
+.alert #arc{stroke:#fff!important}
+.gauge div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#score{font-size:54px;font-weight:800;line-height:1}
+#label{text-align:center;font-size:19px;margin-top:8px}
+#tactics{text-align:center}
+.chip{display:inline-block;padding:2px 10px;margin:8px 4px 0;border-radius:99px;background:rgba(0,0,0,.08);font-size:14px}
 .alert .chip{background:rgba(255,255,255,.22)}
+#spark{width:100%;height:44px;margin-top:12px}
+#spark polyline{fill:none;stroke:currentColor;stroke-width:2;vector-effect:non-scaling-stroke}
+#spark line{stroke:currentColor;opacity:.4;stroke-dasharray:3 3;vector-effect:non-scaling-stroke}
+.stats{display:flex;gap:14px;align-items:center;margin-top:10px;font-size:14px}
+.bar{flex:1;height:8px;background:rgba(128,128,128,.25);border-radius:9px;overflow:hidden}
+#meter{height:100%;width:0;background:currentColor;transition:width .08s}
 button{font:inherit;padding:9px 14px;border-radius:8px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
 button.ghost{background:transparent;color:inherit;border-color:currentColor}
 button:disabled{opacity:.4;cursor:not-allowed}
+select{font:inherit;padding:6px;border-radius:6px;border:1px solid var(--line)}
 :focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0}
+#status,#eng{color:var(--muted);font-size:14px}
 #log{height:340px;overflow:auto;display:flex;flex-direction:column;gap:8px}
-.m{max-width:85%;padding:8px 12px;border-radius:10px}
-.m.scammer{background:#FBE3E6;align-self:flex-start}
-.m.honeypot{background:#D9F0EE;align-self:flex-end}
+.m{max-width:85%;padding:8px 12px;border-radius:10px;animation:fade .25s}
+.m.scammer{background:#FBE3E6;align-self:flex-start}.m.honeypot{background:#D9F0EE;align-self:flex-end}
+.aitag{font-size:11px;opacity:.6;display:block;margin-top:2px}
 #interim{color:var(--muted)}
+.chatrow{display:flex;gap:8px;margin-top:12px}
+.chatrow input{flex:1;font:inherit;padding:9px 12px;border-radius:8px;border:1px solid var(--line)}
+.hint2{color:var(--muted);font-size:13px;margin:6px 0 0}
 pre{white-space:pre-wrap;font-size:13px;max-height:420px;overflow:auto;background:var(--paper);padding:12px;border-radius:8px}
 ul{margin:0 0 12px;padding-left:20px}
+/* new tabs: history / trends / reports / settings */
+.listrow{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.listrow:last-child{border-bottom:0}
+.listrow .meta{color:var(--muted);font-size:13px;margin-top:2px}
+.tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12.5px;background:rgba(0,0,0,.08);margin-left:6px}
+.tag.hot{background:rgba(215,38,61,.14);color:var(--red)}
+.kpis{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;min-width:130px}
+.kpi b{display:block;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:26px}
+.kpi span{color:var(--muted);font-size:13px}
+.trendrow{display:flex;align-items:center;gap:10px;margin:9px 0}
+.trendrow .lbl2{width:170px;font-size:14px}
+.trendrow .tbar{flex:1;height:10px;background:rgba(128,128,128,.2);border-radius:6px;overflow:hidden}
+.trendrow .tbar i{display:block;height:100%;background:var(--ink);font-style:normal}
+.trendrow .n{width:26px;text-align:right;font-size:13px;color:var(--muted)}
+#trendSpark{width:100%;height:60px}
+#trendSpark polyline{fill:none;stroke:var(--red);stroke-width:2}
+#trendSpark line{stroke:var(--line);stroke-dasharray:3 3}
 </style>
 </head>
 <body>
-<header><h1>Scammer Ko Scam Kar</h1><p>Live scam-call guardian with an AI honeypot</p></header>
-<main>
-<section>
-  <div class="card" id="threat">
-    <div>Threat score</div>
-    <div class="big" id="score">0%</div>
-    <div id="label">Listening…</div>
-    <div id="tactics"></div>
-    <p><button id="honey" disabled>Turn on Honeypot</button> <span id="timer"></span></p>
-    <small id="hint">Honeypot unlocks at 90% confidence.</small>
-  </div>
-  <div class="card">
-    <h2>Start a call</h2>
-    <p><button id="demo">Run demo call</button> <button id="mic" class="ghost">Use microphone</button></p>
-    <label>Language <select id="lang"><option value="en-IN">English (India)</option><option value="hi-IN">Hindi</option></select></label>
-  </div>
-</section>
-<section>
-  <div class="card"><h2>Live transcript</h2><div id="log"></div><em id="interim"></em></div>
-  <div class="card">
-    <h2>Details captured from the caller</h2>
-    <ul id="ents"><li>Nothing yet</li></ul>
-    <button id="rep" class="ghost">Generate cybercrime report</button>
-  </div>
-  <div class="card" id="repbox" hidden><h2>Report</h2><pre id="repout"></pre><button id="dl">Download report</button></div>
-</section>
-</main>
-<script>
-// Leave empty when the backend serves this page. If you host the frontend elsewhere, set your backend URL, e.g. 'https://my-api.onrender.com'
-const API_BASE='';
-const $=id=>document.getElementById(id);
-let sid,honey=false,micOn=false,rec,speaking=false,demoing=false,chain=Promise.resolve(),t0,tick,last='';
-const api=(u,b)=>fetch(API_BASE+u,{method:b?'POST':'GET',headers:{'Content-Type':'application/json'},body:b&&JSON.stringify(b)}).then(r=>r.json());
 
-const DEMO=[
- "Hello, this is Inspector Rajesh Kumar from Mumbai Police. An illegal parcel under your Aadhaar number was seized at Andheri customs.",
- "The parcel contains MDMA and fake passports. A CBI warrant is issued in your name. You are under digital arrest, do not disconnect this call.",
- "Do not tell anyone in your family, or you will be arrested immediately. Keep your video on.",
- "To prove your innocence, transfer the verification amount to the RBI safe account. Send it to UPI ID rajesh.cbi@okaxis right now.",
- "If UPI fails, use account number 123456789012, IFSC SBIN0001234, or open http://cbi-verify-india.xyz and read me the OTP. My number is 9876543210."
+<div id="landing">
+  <div class="hero">
+    <p class="kicker">For families who still pick up the phone</p>
+    <h1>Keep the scammer talking, not your parents.</h1>
+    <p class="lead">Scammer Ko Scam Kar listens to a call as it happens, recognises fake-police, digital-arrest, KYC and courier scripts, and lets an AI decoy — a confused, chatty retired schoolteacher — stall the caller while it quietly writes down their UPI ID, account number and phone number.</p>
+    <div class="cta-row">
+      <button class="primary" id="enterApp">Open Live Guardian</button>
+      <button class="ghost2" id="seeSteps">See how it works</button>
+    </div>
+    <p class="trust">Runs on your own machine; transcripts stay in a local file, nothing is uploaded elsewhere. If money has already been sent, call the national cyber-crime helpline <b>1930</b> before anything else.</p>
+  </div>
+  <div class="steps" id="stepsAnchor">
+    <div class="step"><b>1</b><h3>Listen</h3><p>Every line the caller says is scored against known scam tactics — fake police, digital arrest, KYC threats, OTP requests — the moment it's said.</p></div>
+    <div class="step"><b>2</b><h3>Stall</h3><p>Past 60% confidence, Kamla Devi takes over the reply: hard of hearing, easily confused, and in absolutely no hurry to hang up.</p></div>
+    <div class="step"><b>3</b><h3>Report</h3><p>One click drafts a cybercrime.gov.in complaint with every identifier the caller gave away, ready to file.</p></div>
+  </div>
+  <div class="statstrip" id="landStats">
+    <div><b id="lsCalls">–</b><span>calls analysed</span></div>
+    <div><b id="lsCaught">–</b><span>callers stalled</span></div>
+    <div><b id="lsEnts">–</b><span>details captured</span></div>
+  </div>
+  <div class="landfoot">This is a browser-based demo — it does not join a real phone line. Web Speech listening works best in Chrome or Edge; verify any captured identifier before filing a report.</div>
+</div>
+
+<aside id="side">
+  <div class="brand"><button id="burger" aria-label="Slide sidebar" style="width:auto;padding:8px 12px">☰</button><span class="lbl">Scammer Ko<br>Scam Kar</span></div>
+  <nav>
+    <button class="tabbtn" id="homeBtn"><i>⌂</i><span class="lbl">Home</span></button>
+    <button class="tabbtn on" data-tab="live"><i>●</i><span class="lbl">Live Guardian</span></button>
+    <button class="tabbtn" data-tab="history"><i>◷</i><span class="lbl">Call History</span></button>
+    <button class="tabbtn" data-tab="trends"><i>◎</i><span class="lbl">Scam Trends</span></button>
+    <button class="tabbtn" data-tab="reports"><i>▤</i><span class="lbl">Reports</span></button>
+    <button class="tabbtn" data-tab="settings"><i>⚙</i><span class="lbl">Settings</span></button>
+  </nav>
+</aside>
+
+<div id="app">
+<section class="tab on" id="live">
+  <h1>Live Guardian</h1><p class="sub">Scam-call detection with an AI honeypot</p>
+  <div class="grid">
+    <div class="col">
+      <div class="card" id="threat">
+        <div class="gauge">
+          <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="54"/><circle id="arc" cx="60" cy="60" r="54" stroke="hsl(130 70% 42%)" stroke-dasharray="339.3" stroke-dashoffset="339.3" transform="rotate(-90 60 60)"/></svg>
+          <div><span id="score">0%</span><small>threat score</small></div>
+        </div>
+        <div id="label">Listening…</div>
+        <div id="tactics"></div>
+        <svg id="spark" viewBox="0 0 200 40" preserveAspectRatio="none"><line x1="0" x2="200" y1="16" y2="16"/><polyline id="line" points=""/></svg>
+        <div class="stats"><span>Mic</span><div class="bar"><div id="meter"></div></div><span>Pace <b id="pace">–</b></span></div>
+        <p><button id="honey" disabled>Turn on Honeypot</button> <span id="timer"></span></p>
+        <small id="hint">Honeypot unlocks at 60% confidence.</small>
+      </div>
+      <div class="card">
+        <h2>Start a call</h2>
+        <div class="row"><button id="demo">Run random demo call</button> <button id="mic" class="ghost">Use microphone</button></div>
+        <div class="row">
+          <label>Language <select id="lang"><option value="en-IN">English</option><option value="hi-IN">Hindi</option></select></label>
+          <label>Listening <select id="engine"><option value="browser">Browser (fast)</option><option value="whisper">Whisper (accurate)</option></select></label>
+        </div>
+        <div id="status"></div><div id="eng">Voice: neural (falls back to browser voice)</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h2>Live transcript</h2>
+        <div id="log"></div><em id="interim"></em>
+        <div class="chatrow"><input id="chatText" placeholder="Or type what the caller said…" autocomplete="off"><button id="chatSend">Send</button></div>
+        <p class="hint2">Typed lines go through the same detector as the mic. Mention things like police, OTP or a bank transfer to raise the threat score and unlock the honeypot.</p>
+      </div>
+      <div class="card">
+        <h2>Details captured from the caller</h2>
+        <ul id="ents"><li>Nothing yet</li></ul>
+        <button id="rep" class="ghost">Generate cybercrime report</button>
+      </div>
+      <div class="card" id="repbox" hidden><h2>Report</h2><pre id="repout"></pre><button id="dl">Download report</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="tab" id="history">
+  <h1>Call History</h1><p class="sub">Every call this backend has logged, newest first</p>
+  <div class="card"><div id="histList">Loading…</div></div>
+  <div class="card" id="histDetail" hidden></div>
+</section>
+
+<section class="tab" id="trends">
+  <h1>Scam Trends</h1><p class="sub">Aggregated across every call analysed so far</p>
+  <div class="kpis" id="kpis"></div>
+  <div class="card"><h2>Scam types seen</h2><div id="byLabel">Loading…</div></div>
+  <div class="card"><h2>Details captured, by kind</h2><div id="byEntity">Loading…</div></div>
+  <div class="card"><h2>Threat score, recent calls</h2>
+    <svg id="trendSpark" viewBox="0 0 200 40" preserveAspectRatio="none"><line x1="0" x2="200" y1="20" y2="20"/><polyline id="trendLine" points=""/></svg>
+  </div>
+</section>
+
+<section class="tab" id="reports">
+  <h1>Reports</h1><p class="sub">AI-drafted cybercrime.gov.in complaints generated from Live Guardian</p>
+  <div class="card"><div id="repList">Loading…</div></div>
+  <div class="card" id="repDetail" hidden><h2>Report</h2><pre id="repDetailText"></pre><button id="repDetailDl" class="ghost">Download</button></div>
+</section>
+
+<section class="tab" id="settings">
+  <h1>Settings</h1><p class="sub">AI status, defaults for new calls, and data controls</p>
+  <div class="card"><h2>AI engine</h2><div id="aiStatus">Checking…</div></div>
+  <div class="card">
+    <h2>Defaults for new calls</h2>
+    <div class="row">
+      <label>Language <select id="defLang"><option value="en-IN">English</option><option value="hi-IN">Hindi</option></select></label>
+      <label>Listening <select id="defEngine"><option value="browser">Browser (fast)</option><option value="whisper">Whisper (accurate)</option></select></label>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Data</h2>
+    <p class="sub" style="margin-bottom:10px">Everything — transcripts, captured details, reports — lives in one local file, <code>backend/scam.db</code>.</p>
+    <button class="ghost" id="clearData">Clear all calls, reports and captured details</button>
+  </div>
+</section>
+</div>
+
+<script>
+const $=id=>document.getElementById(id),THRESH=.6,API_BASE='';  // API_BASE: set only if the frontend is hosted apart from the backend
+let sid,honey=false,micOn=false,speaking=false,demoing=false,chain=Promise.resolve(),t0,tick,last='',hist=[],ttsOK=true,peak=0,stream,recog,shown=0,raf;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms)),pick=a=>a[Math.floor(Math.random()*a.length)];
+const api=(u,b)=>fetch(API_BASE+u,{method:b?'POST':'GET',headers:{'Content-Type':'application/json'},body:b&&JSON.stringify(b)}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()});
+const setStatus=t=>$('status').textContent=t;
+function el(tag,props={},...kids){const n=document.createElement(tag);
+  for(const[k,v]of Object.entries(props||{})){if(k==='class')n.className=v;else if(k.startsWith('on'))n[k.slice(2).toLowerCase()]=v;else if(k==='style')n.setAttribute('style',v);else n.setAttribute(k,v)}
+  kids.flat().forEach(k=>n.append(k&&k.nodeType?k:document.createTextNode(k==null?'':k)));return n}
+
+/* landing page */
+function showApp(){document.body.classList.add('app');localStorage.setItem('skk_entered','1')}
+function showLanding(){document.body.classList.remove('app')}
+$('enterApp').onclick=showApp;
+$('homeBtn').onclick=showLanding;
+$('seeSteps').onclick=()=>$('stepsAnchor').scrollIntoView({behavior:'smooth'});
+if(localStorage.getItem('skk_entered'))showApp();
+async function loadLandingStats(){
+  try{const s=await api('/api/stats');
+    $('lsCalls').textContent=s.total_calls;
+    $('lsCaught').textContent=s.honeypot_activations;
+    $('lsEnts').textContent=s.by_entity.reduce((a,e)=>a+e.n,0);
+  }catch{}
+}
+loadLandingStats();
+
+/* sidebar + tabs */
+$('burger').onclick=()=>document.body.classList.toggle('min');
+if(innerWidth<900)document.body.classList.add('min');
+const TAB_LOADERS={history:loadHistory,trends:loadTrends,reports:loadReports,settings:loadSettings};
+document.querySelectorAll('.tabbtn[data-tab]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tabbtn,.tab').forEach(e=>e.classList.remove('on'));
+  b.classList.add('on');$(b.dataset.tab).classList.add('on');
+  TAB_LOADERS[b.dataset.tab]&&TAB_LOADERS[b.dataset.tab]()});
+
+/* saved defaults (Settings tab) applied to the Live tab's own controls */
+const sLang=localStorage.getItem('skk_lang'),sEngine=localStorage.getItem('skk_engine');
+if(sLang)$('lang').value=sLang; if(sEngine)$('engine').value=sEngine;
+
+/* randomised demo calls */
+const num=n=>Array.from({length:n},()=>Math.floor(Math.random()*10)).join('');
+const vars=()=>({name:pick(['Rajesh Kumar','Vikram Singh','Amit Deshmukh','Sanjay Verma','Arvind Rao']),badge:'MH'+num(5),
+  city:pick(['Mumbai','Delhi','Hyderabad','Pune','Bengaluru']),amt:pick(['twenty-eight thousand','forty-two thousand','sixty-five thousand','one lakh ten thousand']),
+  upi:pick(['rajesh.cbi','verify.desk','police.help','kyc.support','secure.pay'])+num(2)+'@'+pick(['okaxis','ybl','paytm','oksbi']),
+  phone:pick(['9','8','7','6'])+num(9),acct:num(12),ifsc:pick(['SBIN','HDFC','ICIC','UTIB'])+'0'+num(6),
+  link:'http://'+pick(['cbi-verify','kyc-update','trai-check','secure-pay'])+'-'+pick(['india','gov','help'])+'.'+pick(['xyz','top','online'])});
+const SCEN=[
+ ["Hello, this is Inspector {name} from {city} Police, badge {badge}. An illegal parcel under your Aadhaar number was seized at customs.",
+  "The parcel contains MDMA and fake passports. A CBI warrant is issued in your name. You are under digital arrest, do not disconnect this call.",
+  "Do not tell anyone in your family, or you will be arrested immediately. Keep your video on.",
+  "To prove your innocence, transfer {amt} rupees to the RBI safe account. Send it to UPI ID {upi} right now.",
+  "If UPI fails, use account number {acct}, IFSC {ifsc}. My number is {phone}."],
+ ["This is FedEx customs. A package in your name with drugs was seized at {city} airport.",
+  "The narcotics police will register a case and arrest you today. Stay on the line, this is confidential.",
+  "Pay the clearance fee of {amt} rupees immediately to UPI ID {upi} and the case will be closed.",
+  "Open {link} and enter your card details. Call me back on {phone}."],
+ ["This is TRAI. Your SIM card will be blocked in two hours because of illegal activity from your number.",
+  "To avoid disconnection, complete KYC immediately. Officer {name} will guide you, do not tell anyone.",
+  "Install the QuickSupport app and read me the OTP you receive right now.",
+  "Pay a verification amount to UPI ID {upi}. Our helpline is {phone}."],
+ ["This is the electricity board. Your bill is pending and your power supply will be disconnected tonight.",
+  "Officer {name} here. Install the AnyDesk app and share the code so I can update your account.",
+  "Read me the OTP right now, or we will block your connection. Send {amt} rupees to {upi}.",
+  "You can also open {link}. Call {phone} if there is any problem."],
+ ["Good morning sir, I am calling from the head office of your bank. Your KYC has expired and your account will be blocked today.",
+  "Officer {name} will verify you. Please share the OTP right now to stop legal action.",
+  "Now transfer {amt} rupees to the safe account, UPI ID {upi}, as a refundable verification amount.",
+  "Details: account number {acct}, IFSC {ifsc}. Call me on {phone} once done."]
 ];
 
-function speak(text,who){return new Promise(res=>{
-  if(!('speechSynthesis' in window)) return res();
-  speaking=true; if(rec) try{rec.stop()}catch{}
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang=demoing?'en-IN':$('lang').value;
-  u.pitch=who==='honeypot'?1.5:.6; u.rate=who==='honeypot'?.85:1;
-  const done=()=>{speaking=false; if(micOn) try{rec.start()}catch{}; res()};
-  u.onend=done; u.onerror=done; speechSynthesis.speak(u);
-});}
-
-function addMsg(role,text){
-  const d=document.createElement('div'); d.className='m '+role;
-  const b=document.createElement('b'); b.textContent=role==='scammer'?'Caller':'Kamla Devi (AI)';
-  d.append(b,document.createElement('br'),text); $('log').append(d); $('log').scrollTop=1e9;
+/* voice out: neural voice from backend, browser voice as fallback */
+async function speak(text,who){
+  speaking=true;setStatus(who==='honeypot'?'Kamla Devi is speaking…':'Caller is speaking…');
+  if(recog)try{recog.stop()}catch{}
+  const say=text.replace(/\d{4,}/g,m=>m.split('').join(' '));let dur=0;
+  try{
+    if(!ttsOK)throw 0;
+    const r=await fetch(`${API_BASE}/api/tts?who=${who}&text=${encodeURIComponent(say)}`);
+    if(!r.ok)throw 0;
+    const a=new Audio(URL.createObjectURL(await r.blob()));
+    await Promise.race([new Promise((ok,no)=>{a.onended=ok;a.onerror=no;a.onloadedmetadata=()=>dur=a.duration;a.play().catch(no)}),sleep(30000).then(()=>{a.pause()})]);
+    $('eng').textContent='Voice: neural (edge-tts)';
+  }catch{
+    ttsOK=false;$('eng').textContent='Voice: browser (neural voice unavailable, is edge-tts installed?)';
+    const s=performance.now();
+    await Promise.race([new Promise(ok=>{const u=new SpeechSynthesisUtterance(say);u.lang='en-IN';u.pitch=who==='honeypot'?1.4:.7;u.rate=who==='honeypot'?.85:1;u.onend=u.onerror=ok;speechSynthesis.speak(u)}),sleep(30000).then(()=>speechSynthesis.cancel())]);
+    dur=(performance.now()-s)/1000;
+  }
+  speaking=false;setStatus(micOn?'Listening…':'');
+  if(micOn&&recog)try{recog.start()}catch{}
+  return dur;
 }
 
+/* threat gauge: animated count, colour shift, sparkline */
+function paint(v){$('score').textContent=Math.round(v*100)+'%';
+  const a=$('arc');a.style.strokeDashoffset=339.3*(1-v);a.style.stroke=`hsl(${130-130*v} 70% 42%)`}
+function animate(to){cancelAnimationFrame(raf);const from=shown,s=performance.now();
+  const step=t=>{const k=Math.min(1,(t-s)/900);shown=from+(to-from)*(1-Math.pow(1-k,3));paint(shown);if(k<1)raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)}
 function render(a){
-  const p=Math.round(a.score*100);
-  $('score').textContent=p+'%'; $('label').textContent=a.label;
-  $('threat').className='card '+(p>=90?'alert':p>=50?'warn':'');
+  animate(a.score);$('label').textContent=a.label;
+  $('threat').className='card '+(a.score>=THRESH?'alert':a.score>=.3?'warn':'');
   $('tactics').replaceChildren(...a.tactics.map(t=>Object.assign(document.createElement('span'),{className:'chip',textContent:t})));
-  $('honey').disabled=p<90&&!honey;
-  $('hint').textContent=p>=90?'Fraud confirmed. Honeypot ready.':'Honeypot unlocks at 90% confidence.';
+  hist=a.score?[...hist,a.score]:[];const n=hist.length;
+  $('line').setAttribute('points',hist.map((v,i)=>`${n>1?i*200/(n-1):0},${40-v*40}`).join(' '));
+  $('honey').disabled=a.score<THRESH&&!honey;
+  $('hint').textContent=a.score>=THRESH?'Fraud detected. Honeypot ready.':'Honeypot unlocks at 60% confidence.';
   const es=a.entities.length?a.entities:[{kind:'Nothing yet',value:''}];
   $('ents').replaceChildren(...es.map(e=>Object.assign(document.createElement('li'),{textContent:e.value?`${e.kind}: ${e.value}`:e.kind})));
 }
-
+function addMsg(role,text,ai,why){
+  const d=document.createElement('div');d.className='m '+role;const b=document.createElement('b');
+  b.textContent=role==='scammer'?'Caller':'Kamla Devi (AI)';d.append(b,document.createElement('br'),text);
+  if(role==='honeypot'&&ai!==undefined){const s=document.createElement('span');s.className='aitag';
+    s.textContent=ai?'AI-generated reply':'Rule-based reply (AI unavailable — check Settings)';if(!ai&&why){s.title=why;const w=document.createElement('div');w.className='aitag';w.textContent='Reason: '+why;d.append(s,w)}else d.append(s)}
+  $('log').append(d);$('log').scrollTop=1e9}
 function setHoney(on){
-  honey=on; $('honey').textContent=on?'Honeypot on: AI is answering':'Turn on Honeypot';
-  clearInterval(tick); $('timer').textContent='';
-  if(on){t0=Date.now(); tick=setInterval(()=>{const s=Math.floor((Date.now()-t0)/1000);
-    $('timer').textContent=`Caller engaged ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`},1000);}
-}
+  honey=on;$('honey').textContent=on?'Honeypot on: AI is answering':'Turn on Honeypot';clearInterval(tick);$('timer').textContent='';
+  if(on){t0=Date.now();tick=setInterval(()=>{const s=Math.floor((Date.now()-t0)/1000);$('timer').textContent=`Caller engaged ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`},1000)}}
 $('honey').onclick=()=>setHoney(!honey);
 
-async function handle(text,auto=false){
-  if(!text) return;
-  addMsg('scammer',text);
-  const a=await api('/api/analyze',{sid,text}); render(a);
-  if(auto&&a.score>=.9&&!honey) setHoney(true);
-  if(honey&&a.score>=.9){
-    const r=await api('/api/honeypot',{sid,text});
-    addMsg('honeypot',r.reply); await speak(r.reply,'honeypot');
-  }
+async function handle(text,pace=0){
+  if(!text)return;addMsg('scammer',text);
+  if(pace){$('pace').textContent=Math.round(pace)+' wpm'}
+  try{
+    const a=await api('/api/analyze',{sid,text,pace:Math.round(pace)});render(a);
+    // Auto-engage the honeypot as soon as a real call crosses the threshold, in every mode
+    // (demo, mic or typed chat) -- previously this only fired during a scripted demo, so a
+    // real live call never got the AI decoy talking back or capturing details.
+    if(a.score>=THRESH&&!honey)setHoney(true);
+    if(honey&&a.score>=THRESH){const r=await api('/api/honeypot',{sid,text});addMsg('honeypot',r.reply,r.ai,r.why);await speak(r.reply,'honeypot')}
+  }catch{setStatus('Server error. Check the terminal running uvicorn.')}
 }
-
 async function reset(){
-  sid=(await api('/api/session',{})).sid; $('log').replaceChildren(); setHoney(false);
-  render({score:0,label:'Listening…',tactics:[],entities:[]}); $('repbox').hidden=true;
-}
+  sid=(await api('/api/session',{})).sid;$('log').replaceChildren();setHoney(false);hist=[];ttsOK=true;
+  render({score:0,label:'Listening…',tactics:[],entities:[]});$('pace').textContent='–';$('repbox').hidden=true}
+
+/* manual one-on-one chat: type a line, it goes through the same pipeline as mic/demo audio */
+function sendChat(){const t=$('chatText').value.trim();if(!t)return;$('chatText').value='';chain=chain.then(()=>handle(t))}
+$('chatSend').onclick=sendChat;
+$('chatText').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();sendChat()}};
 
 $('demo').onclick=async()=>{
-  if(micOn) $('mic').click();
-  await reset(); demoing=true; $('demo').disabled=true;
-  for(const line of DEMO){await speak(line,'scammer'); await handle(line,true); await new Promise(r=>setTimeout(r,500));}
-  demoing=false; $('demo').disabled=false;
+  if(micOn)$('mic').click();
+  await reset();demoing=true;$('demo').disabled=true;
+  const v=vars(),lines=pick(SCEN).map(l=>l.replace(/\{(\w+)\}/g,(_,k)=>v[k]));
+  for(const l of lines){const d=await speak(l,'scammer');await handle(l,d?l.split(' ').length/d*60:0);await sleep(700)}
+  demoing=false;$('demo').disabled=false;setStatus('Demo finished. Generate the report below.');
 };
 
-$('mic').onclick=async()=>{
+/* live mic: level meter + two listening engines */
+function meter(){
+  const ctx=new AudioContext(),an=ctx.createAnalyser(),buf=new Uint8Array(an.fftSize);ctx.createMediaStreamSource(stream).connect(an);
+  (function loop(){if(!micOn){ctx.close();$('meter').style.width='0';return}
+    an.getByteTimeDomainData(buf);let m=0;for(const v of buf)m=Math.max(m,Math.abs(v-128)/128);
+    peak=Math.max(peak,m);$('meter').style.width=Math.min(100,m*220)+'%';requestAnimationFrame(loop)})()}
+function recordLoop(){   // Whisper: 5-second chunks, silence is never sent
+  if(!micOn)return;peak=0;
+  const mime=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg'].find(t=>window.MediaRecorder&&MediaRecorder.isTypeSupported(t))||'';
+  let r;try{r=new MediaRecorder(stream,mime?{mimeType:mime}:undefined)}catch(e){return setStatus('This browser cannot record audio: '+e.message+'. Switch Listening to Browser.')}
+  const parts=[];
+  r.ondataavailable=e=>e.data&&e.data.size&&parts.push(e.data);
+  r.onstop=async()=>{const ok=!speaking&&peak>.03&&parts.length;recordLoop();if(!ok)return;   // .03: a phone speaker across the room is quiet
+    try{const blob=new Blob(parts,{type:r.mimeType||mime||'audio/webm'});
+      const res=await fetch(`${API_BASE}/api/transcribe?lang=${$('lang').value.slice(0,2)}`,{method:'POST',headers:{'Content-Type':blob.type},body:blob});
+      if(!res.ok){const d=await res.text();throw new Error(d.slice(0,160)||res.status)}
+      const t=((await res.json()).text||'').trim();
+      if(t.split(/\s+/).length>1){setStatus('Listening…');chain=chain.then(()=>handle(t))}}
+    catch(e){setStatus('Whisper failed: '+e.message+' — check the terminal, or switch Listening to Browser.')}};
+  r.start();setTimeout(()=>r.state==='recording'&&r.stop(),5000)}
+function startRecog(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR) return alert('Live mic needs Chrome or Edge. Use the demo call instead.');
-  if(micOn){micOn=false; rec.stop(); $('mic').textContent='Use microphone'; return;}
-  await reset(); micOn=true; $('mic').textContent='Stop listening';
-  rec=new SR(); rec.lang=$('lang').value; rec.continuous=true; rec.interimResults=true;
-  rec.onresult=e=>{let tmp='';
-    for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];
-      if(r.isFinal){$('interim').textContent='';const t=r[0].transcript.trim();chain=chain.then(()=>handle(t));}
-      else tmp=r[0].transcript;}
-    if(tmp) $('interim').textContent=tmp;};
-  rec.onend=()=>{if(micOn&&!speaking) try{rec.start()}catch{}};
-  rec.start();
-};
+  if(!SR)return setStatus('Browser listening needs Chrome or Edge. Use Whisper instead.');
+  if(/^((?!chrome|android|edg).)*safari/i.test(navigator.userAgent))setStatus('Safari\'s speech recogniser is unreliable here. Use Chrome/Edge, or set Listening to Whisper.');
+  recog=new SR();recog.lang=$('lang').value;recog.continuous=true;recog.interimResults=true;let ts=0,fatal=false,fails=0;
+  const MSG={'not-allowed':'Microphone blocked. Click the lock icon in the address bar, allow the microphone, then try again.',
+    'service-not-allowed':'Speech service is blocked by the browser or OS. Use Whisper instead.',
+    'network':'Chrome could not reach Google\'s speech service (needs internet). Use Whisper instead.',
+    'audio-capture':'No microphone found or another app is using it.','language-not-supported':'That language is not supported by browser listening. Use Whisper.'};
+  recog.onerror=e=>{if(e.error==='no-speech'||e.error==='aborted')return;   // normal: silence, or we stopped it while Kamla speaks
+    if(MSG[e.error]){setStatus(MSG[e.error]);if(e.error!=='network')fatal=true}else setStatus('Speech error: '+e.error);
+    if(++fails>=3||fatal){micOn=false;$('mic').textContent='Use microphone';stream&&stream.getTracks().forEach(t=>t.stop())}};
+  recog.onresult=e=>{fails=0;let tmp='';
+    for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(!ts)ts=performance.now();
+      if(r.isFinal){const t=r[0].transcript.trim(),w=t.split(/\s+/).length,sec=(performance.now()-ts)/1000;ts=0;$('interim').textContent='';
+        chain=chain.then(()=>handle(t,w>=6?w/sec*60:0))}else tmp=r[0].transcript}
+    if(tmp)$('interim').textContent=tmp};
+  recog.onend=()=>{if(micOn&&!speaking&&!fatal)setTimeout(()=>{try{recog.start()}catch{}},250)};recog.start()}
+$('mic').onclick=async()=>{
+  if(micOn){micOn=false;if(recog)recog.stop();stream&&stream.getTracks().forEach(t=>t.stop());$('mic').textContent='Use microphone';setStatus('');return}
+  try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}catch{return alert('Microphone permission is needed.')}
+  await reset();micOn=true;$('mic').textContent='Stop listening';setStatus('Listening…');meter();
+  $('engine').value==='whisper'?recordLoop():startRecog()};
 
 $('rep').onclick=async()=>{
-  const r=await api('/api/report/'+sid); last=r.report;
-  $('repout').textContent=last; $('repbox').hidden=false; $('repbox').scrollIntoView({behavior:'smooth'});
+  try{const r=await api('/api/report/'+sid);last=r.report;$('repout').textContent=last;$('repbox').hidden=false;$('repbox').scrollIntoView({behavior:'smooth'})}
+  catch{setStatus('Could not build the report. Check the terminal.')}};
+$('dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([last],{type:'text/plain'}));a.download=`cyber-report-${sid}.txt`;a.click()};
+
+/* ---- Call History tab ---- */
+async function loadHistory(){
+  const list=$('histList');list.textContent='Loading…';$('histDetail').hidden=true;
+  let rows;try{rows=await api('/api/sessions')}catch{list.textContent='Could not reach the server.';return}
+  if(!rows.length){list.textContent='No calls yet — run a demo or start a call from Live Guardian.';return}
+  list.replaceChildren(...rows.map(r=>{
+    const when=new Date(r.started*1000).toLocaleString();
+    return el('div',{class:'listrow'},
+      el('div',{},
+        el('div',{},`${r.label} `,el('span',{class:'tag'+(r.score>=THRESH?' hot':'')},Math.round(r.score*100)+'%')),
+        el('div',{class:'meta'},`${when} · ${r.messages} messages · ${r.entities} details captured${r.honeypot?' · honeypot used':''}`)),
+      el('div',{class:'row',style:'margin:0'},
+        el('button',{class:'ghost',onClick:()=>viewSession(r.id)},'View'),
+        el('button',{class:'ghost',onClick:()=>deleteSession(r.id)},'Delete')));
+  }));
+}
+async function viewSession(id){
+  let d;try{d=await api('/api/session/'+id)}catch{return}
+  const box=$('histDetail');box.hidden=false;
+  box.replaceChildren(
+    el('h2',{},'Transcript — '+id),
+    el('div',{},...(d.messages.length?d.messages.map(m=>el('div',{style:'margin:4px 0'},
+      el('b',{},m.role==='scammer'?'Caller: ':'Honeypot: '),m.text)):[el('div',{class:'meta'},'No messages recorded.')])),
+    el('h2',{style:'margin-top:16px'},'Details captured'),
+    el('ul',{},...(d.entities.length?d.entities.map(e=>el('li',{},`${e.kind}: ${e.value}`)):[el('li',{},'Nothing captured')])));
+  box.scrollIntoView({behavior:'smooth'});
+}
+async function deleteSession(id){
+  if(!confirm('Delete this call, its transcript and any report from it? This cannot be undone.'))return;
+  try{await fetch(`${API_BASE}/api/session/${id}`,{method:'DELETE'})}catch{}
+  loadHistory();
+}
+
+/* ---- Scam Trends tab ---- */
+function barRow(label,n,max){
+  return el('div',{class:'trendrow'},el('div',{class:'lbl2'},label),
+    el('div',{class:'tbar'},el('i',{style:`width:${max?Math.round(n/max*100):0}%`})),
+    el('div',{class:'n'},String(n)));
+}
+async function loadTrends(){
+  let s;try{s=await api('/api/stats')}catch{$('kpis').textContent='Could not reach the server.';return}
+  $('kpis').replaceChildren(
+    el('div',{class:'kpi'},el('b',{},String(s.total_calls)),el('span',{},'calls analysed')),
+    el('div',{class:'kpi'},el('b',{},String(s.flagged_calls)),el('span',{},'flagged ≥ 60%')),
+    el('div',{class:'kpi'},el('b',{},String(s.honeypot_activations)),el('span',{},'honeypot activations')),
+    el('div',{class:'kpi'},el('b',{},Math.round(s.avg_score*100)+'%'),el('span',{},'average threat score')));
+  const maxLabel=Math.max(1,...s.by_label.map(x=>x.n)),maxEnt=Math.max(1,...s.by_entity.map(x=>x.n));
+  $('byLabel').replaceChildren(...(s.by_label.length?s.by_label.map(l=>barRow(l.label,l.n,maxLabel)):[el('div',{class:'meta'},'Nothing classified yet.')]));
+  $('byEntity').replaceChildren(...(s.by_entity.length?s.by_entity.map(e=>barRow(e.kind,e.n,maxEnt)):[el('div',{class:'meta'},'No details captured yet.')]));
+  const h=s.score_trend,n=h.length;
+  $('trendLine').setAttribute('points',n?h.map((v,i)=>`${n>1?i*200/(n-1):0},${40-v*40}`).join(' '):'');
+}
+
+/* ---- Reports tab ---- */
+function downloadReport(r){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([r.text],{type:'text/plain'}));a.download=`cyber-report-${r.sid}.txt`;a.click()}
+function viewReport(r){$('repDetail').hidden=false;$('repDetailText').textContent=r.text;$('repDetailDl').onclick=()=>downloadReport(r);$('repDetail').scrollIntoView({behavior:'smooth'})}
+async function loadReports(){
+  const list=$('repList');list.textContent='Loading…';$('repDetail').hidden=true;
+  let rows;try{rows=await api('/api/reports')}catch{list.textContent='Could not reach the server.';return}
+  if(!rows.length){list.textContent='No reports generated yet — use "Generate cybercrime report" in Live Guardian.';return}
+  list.replaceChildren(...rows.map(r=>{
+    const when=new Date(r.ts*1000).toLocaleString();
+    return el('div',{class:'listrow'},
+      el('div',{},el('div',{},`${r.label} `,el('span',{class:'tag'},Math.round(r.score*100)+'%')),el('div',{class:'meta'},`${when} · session ${r.sid}`)),
+      el('div',{class:'row',style:'margin:0'},el('button',{class:'ghost',onClick:()=>viewReport(r)},'View'),el('button',{class:'ghost',onClick:()=>downloadReport(r)},'Download')));
+  }));
+}
+
+/* ---- Settings tab ---- */
+async function loadSettings(){
+  const box=$('aiStatus');box.textContent='Checking…';
+  try{
+    const h=await api('/api/health?probe=1');
+    const lines=[];
+    if(!h.ai_configured)lines.push('No Groq key set — running on the rule engine and canned replies only.');
+    else if(h.ai_last_ok===false)lines.push('Groq key is set, but the last call failed — replies are falling back to the rule engine.');
+    else lines.push('Groq key is set'+(h.ai_last_ok?' and the last call succeeded.':'; no call made yet this session.'));
+    box.replaceChildren(
+      el('div',{},lines[0]),
+      el('div',{class:'meta'},`Chat model: ${h.fast_model} · Report model: ${h.smart_model} · Whisper: ${h.whisper_model} · Honeypot unlocks at ${Math.round(h.threshold*100)}%`),
+      el('div',{class:'meta'},h.ai_probe?'Live test just now: OK (model replied "'+h.ai_probe+'")':'Live test just now: FAILED'),
+      ...(h.ai_last_error?[el('div',{class:'meta'},'Last error: '+h.ai_last_error)]:[]));
+  }catch{box.textContent='Could not reach the server.'}
+}
+$('defLang').value=$('lang').value; $('defEngine').value=$('engine').value;
+$('defLang').onchange=()=>{localStorage.setItem('skk_lang',$('defLang').value);$('lang').value=$('defLang').value};
+$('defEngine').onchange=()=>{localStorage.setItem('skk_engine',$('defEngine').value);$('engine').value=$('defEngine').value};
+$('clearData').onclick=async()=>{
+  if(!confirm('Delete every call, entity and report on this backend? This cannot be undone.'))return;
+  try{await fetch(`${API_BASE}/api/sessions`,{method:'DELETE'})}catch{}
+  loadHistory();loadTrends();loadReports();loadLandingStats();
 };
-$('dl').onclick=()=>{const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([last],{type:'text/plain'})); a.download=`cyber-report-${sid}.txt`; a.click();};
 
 reset();
 </script>
