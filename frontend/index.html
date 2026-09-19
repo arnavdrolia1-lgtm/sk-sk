@@ -211,7 +211,7 @@ const LOAD={
  async history(){$('hlist').innerHTML=rows(await api('/api/sessions'),['<th>Msgs</th><th>Captured</th>',s=>`<td>${s.msgs}</td><td>${s.ents}</td>`],s=>`<button data-v="${s.id}">View</button> <button class="ghost" data-d="${s.id}">Delete</button>`)},
  async trends(){const s=await api('/api/stats');
   $('kpis').innerHTML=[[s.total,'calls analysed'],[s.flagged,'scams flagged'],[Math.round(s.avg*100)+'%','average threat'],[s.captured,'details captured'],[fmt(s.wasted),'scammer time wasted']].map(([n,l])=>`<div class="card kpi"><b>${n}</b>${l}</div>`).join('');
-  bars($('bytype'),s.by_label);bars($('bykind'),s.by_kind)},
+  bars($('bytype'),s.by_label);bars($('bykind'),s.bykind)},
  async reports(){$('rlist').innerHTML=rows(await api('/api/sessions'),['',()=>''],s=>`<button data-g="${s.id}">Generate report</button>`)},
  async settings(){const s=await api('/api/status?ping=1');$('sysinfo').innerHTML=Object.entries(s.lines).map(([k,v])=>`<p>${esc(k)}: <b>${esc(v)}</b></p>`).join('')}};
 async function view(id){const d=await api('/api/session/'+id),v=$('hview');v.hidden=false;
