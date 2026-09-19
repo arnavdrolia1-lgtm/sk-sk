@@ -1,4 +1,3 @@
-# sk-sk
 # Scammer Ko Scam Kar
 
 Real-time scam-call guardian with an AI honeypot. It scores a call as it happens, then Kamla Devi, a confused 72-year-old, chats with the caller and records their name, phone number, UPI ID, bank details and links. One click turns the call into a draft complaint for cybercrime.gov.in.
@@ -12,50 +11,58 @@ frontend/   Landing page + dashboard (plain HTML/JS, no build step)
 
 | Part | Choice |
 |---|---|
-| AI chat and analysis | **Ollama, running locally** (`llama3.2:3b`). Groq is an optional backup |
-| Speech to text | Browser speech (fast) or **faster-whisper, local** (accurate, optional) |
-| Voice output | edge-tts neural voices (Indian English and Hindi); falls back to the best browser voice |
+| AI chat and analysis | **Ollama, running locally**. It uses the best model you have installed (`gemma3:4b` recommended). Groq is an optional backup |
+| Voice output | **Kokoro-82M, local** (natural, no network). Fallbacks: Microsoft neural voices (edge-tts), then your browser's voice |
+| Speech to text | Browser speech (fast) or faster-whisper, local (accurate, optional) |
 | Detection | Rule engine (instant) plus the AI reading the call in context |
-| Capture | Regex for spoken and typed details (UPI, phone, email, IFSC, account, names, amounts) plus AI extraction that is checked against what was actually said |
+| Capture | Regex for spoken and typed details plus AI extraction that is checked against what was actually said |
 | Database | SQLite (built into Python, `backend/scam.db` is created automatically) |
 
 ## Setup, step by step
 
-1. **Install Ollama** from https://ollama.com (Mac: drag the app to Applications and open it once; it then runs in the background).
-2. **Download the model once** (about 2 GB; use a network without HTTPS filtering):
+1. **Install Ollama** from https://ollama.com and open it once.
+2. **Download a model once** (use a network without HTTPS filtering):
    ```
-   ollama pull llama3.2:3b
+   ollama pull gemma3:4b
    ```
-   Low on memory? Use `llama3.2:1b` and set `OLLAMA_MODEL=llama3.2:1b` in `.env`. 16 GB or more? Try `gemma3:4b`.
-3. **Backend setup** (in a new terminal):
+   Short on memory? `llama3.2:3b` or `llama3.2:1b` also work. 16 GB or more? `llama3.1:8b` writes best. The app picks the best one installed.
+3. **Backend**:
    ```
    cd backend
    python3 -m venv .venv
    source .venv/bin/activate
    pip install -r requirements.txt
    cp .env.example .env
-   uvicorn main:app --reload
    ```
-4. Open **http://localhost:8000** in Chrome or Edge, hard-refresh with `Cmd + Shift + R`.
-5. **Check it**: Settings tab, System status. "Local AI" should say the model is ready and "Engine used last" should say `Ollama llama3.2:3b`.
+4. **Natural voice (Kokoro)**:
+   ```
+   pip install -r requirements-voice.txt
+   python download_voice_models.py
+   ```
+   The download is about 310 MB (`--small` gives a 90 MB version that is faster on weak laptops). If pip says it cannot find a matching version, your Python is too new for these packages: install Python 3.12, create the venv with `python3.12 -m venv .venv`, and repeat.
+5. **Start it**: `uvicorn main:app --reload`, then open http://localhost:8000 in Chrome or Edge and hard-refresh (`Cmd + Shift + R`).
+6. **Check it**: Settings, System status. "Local AI" should say ready and "Voice output" should say Kokoro. Use *Test Kamla* and *Test caller*.
 
-Optional accurate offline listening: `pip install -r requirements-voice.txt`, then pick Whisper under Listening. If your Python version has no wheels for it, skip it and use Browser listening.
+Optional accurate listening: `pip install -r requirements-stt.txt`, then choose Whisper under Listening.
+
+## Voices
+
+- **Settings, Voice engine**: Auto tries Kokoro, then Microsoft neural, then the browser. Or force one.
+- **Voice for Kamla / Voice for caller** list every Kokoro voice, so you can audition them. `bf_emma` (default), `bf_alice` and `bf_isabella` are warm British female voices; `bm_george` is the default caller.
+- Kokoro has no Indian-English voice. Microsoft's `en-IN` voices sound more Indian but need internet: pick "Microsoft neural" under Voice engine to compare.
+- Replies are spoken sentence by sentence, so the next sentence is rendered while the last one plays.
+- The "Voice:" line under the mic buttons shows which engine is speaking, and why if it fell back.
 
 ## Using it
 
-- **Landing page** to **Live Guardian**: run a random demo call, use the microphone, or type as the caller. Tick *Practice mode* to chat with Kamla at any threat level.
-- Choose **Hindi** under Language and Kamla answers in Hindi with a Hindi voice.
-- **Call History** replays calls, **Scam Trends** shows totals, **Reports** builds complaint drafts, **Settings** holds preferences, voice choice and system status.
-
-## Better voices
-
-The green "Voice:" line under the mic buttons says which voice is playing. If it says browser voice, the neural service could not be reached (usually a network that filters HTTPS). Then: use Microsoft Edge (it ships natural Indian voices), or on Mac add "Veena" or "Rishi" (Enhanced) in System Settings, Accessibility, Spoken Content, then pick it in Settings, Browser voice.
+- **Landing page**, then **Live Guardian**: run a random demo call, use the microphone, or type as the caller. Tick *Practice mode* to chat with Kamla at any threat level. Choose **Hindi** under Language for Hindi replies and a Hindi voice.
+- **Call History** replays calls, **Scam Trends** shows totals, **Reports** builds complaint drafts, **Settings** holds preferences and system status.
 
 ## Troubleshooting
 
-- **Replies say "offline rules"**: Ollama is not running or the model is not pulled. Open the Ollama app and run `ollama pull llama3.2:3b`.
-- **First reply is slow**: the model loads into memory once (the server warms it at start-up). Later replies are faster.
-- **Groq errors**: only relevant if you set a key. Use `llama-3.1-8b-instant`; reasoning models like `gpt-oss` are slow and rate limited.
+- **Replies say "offline rules"**: Ollama is not running or no model is pulled.
+- **First reply is slow**: the model loads into memory once; later replies are faster.
+- **Voice says "browser voice"**: read the reason next to it. Usually Kokoro is not set up (step 4) or the network blocks Microsoft's service.
 - **`uvicorn` not found**: activate the virtual environment again.
 
 ## Limits
