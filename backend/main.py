@@ -6,6 +6,16 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+import io
+import soundfile as sf
+
+try:
+    from kokoro_onnx import Kokoro
+    # Loads the 82M parameter model into memory once on startup
+    kokoro_tts = Kokoro("kokoro-v1.0.onnx", "voices-v1.0.bin")
+except Exception as e:
+    kokoro_tts = None
+    print(f"Kokoro TTS not loaded: {e}")
 
 HERE = Path(__file__).resolve().parent
 load_dotenv(HERE / ".env")
@@ -283,9 +293,10 @@ def persona(hi):
     lang = "Hindi written in Devanagari script" if hi else "simple Indian English (a word like beta or arre is fine)"
     return f"""You are Kamla Devi, a 72-year-old retired schoolteacher in Pune: widow, lives alone, hard of hearing, slow with phones, warm and chatty. Grandson Rohan (at college) sets up her phone; neighbour Sharma-ji; she loves tea and has bad knees and thick glasses.
 You are on a phone call with the "Caller". Reply as Kamla in {lang}: one or two short spoken sentences.
-First understand what the caller just said and answer it directly, in character (answer their questions, react to their words, numbers and names). Then, if it fits, ask one follow-up. Never repeat an earlier line.
-If asked for her own details (bank, Aadhaar, OTP, email, address, card), stall in character (diary, glasses, ask Rohan) and never give real or made-up numbers.
-If the caller sounds like a scammer, quietly keep them talking and get them to say their name, phone number, UPI ID, bank account with IFSC, or website, and read it back to check. Never say you are an AI or that you suspect a scam."""
+CRITICAL INSTRUCTION FOR VOICE REALISM: Write exactly how an old person speaks. Use filler words ("Umm...", "Arre...", "Haan..."), pauses ("..."), and repeat words slightly ("Wait, wait..."). Do not use perfect grammar.
+First understand what the caller just said and answer it directly, in character. Then, if it fits, ask one follow-up. Never repeat an earlier line.
+If asked for her own details, stall in character (diary, glasses, ask Rohan) and never give real or made-up numbers.
+If the caller sounds like a scammer, quietly keep them talking and get them to say their name, phone number, UPI ID, bank account with IFSC, or website, and read it back to check."""
 
 
 NEED = ["UPI ID", "Phone", "Account no.", "Link"]
@@ -483,17 +494,42 @@ def clear_all():
     return {"ok": True}
 
 
-@app.get("/api/stats")
-def stats():
-    from collections import Counter
-    rows = _sessions()
-    with db() as c:
-        kinds = {r["kind"]: r["n"] for r in c.execute("SELECT kind, COUNT(*) AS n FROM entities GROUP BY kind")}
-    return {"total": len(rows), "flagged": sum(r["score"] >= THRESH for r in rows),
-            "avg": sum(r["score"] for r in rows) / len(rows) if rows else 0, "captured": sum(kinds.values()),
-            "wasted": sum(r["dur"] for r in rows if r["honeypot"]),
-            "by_label": dict(Counter(r["label"] for r in rows if r["score"] >= THRESH)), "by_kind": kinds}
+@app.get("/api/tts")
+async def tts(text: str, who: str = "honeypot", lang: str = "en"):
+    # 1. Try local Kokoro TTS first for humanlike voice
+    if kokoro_tts:
+        try:
+            # af_heart/af_bella for females, am_michael for males
+            voice = "af_heart" if who == "honeypot" else "am_michael"
 
+            samples, sample_rate = kokoro_tts.create(
+                text, voice=voice, speed=0.85, lang="en-us"
+            )
+
+            buffer = io.BytesIO()
+            sf.write(buffer, samples, sample_rate, format='WAV')
+            buffer.seek(0)
+            return Response(buffer.read(), media_type="audio/wav")
+        except Exception as e:
+            print(f"Kokoro generation failed, falling back to edge-tts: {e}")
+
+    # 2. Fallback to edge-tts if Kokoro isn't configured
+    try:
+        import edge_tts
+    except Exception:
+        raise HTTPException(503, "edge-tts is not installed")
+
+    voice, rate, pitch = VOICES.get((lang, who), VOICES[("en", "honeypot")])
+    last = ""
+    for _ in range(2):
+        try:
+            comm = edge_tts.Communicate(text[:500], voice, rate=rate, pitch=pitch)
+            audio = b"".join([ch["data"] async for ch in comm.stream() if ch["type"] == "audio"])
+            if audio:
+                return Response(audio, media_type="audio/mpeg")
+        except Exception as e:
+            last = str(e)[:100]
+    raise HTTPException(503, f"edge-tts could not reach its voice service ({last or 'no audio'})")
 
 @app.get("/api/status")
 async def status(ping: int = 0):
@@ -522,6 +558,37 @@ async def status(ping: int = 0):
 async def warm_up():  # load the local model into memory so the first reply isn't slow
     asyncio.create_task(llm(FAST, [{"role": "user", "content": "hi"}], max_tokens=2))
 
+@app.get("/api/report/{sid}")
+def generate_report(sid: str):
+    with db() as c:
+        s = c.execute("SELECT * FROM sessions WHERE id=?", (sid,)).fetchone()
+        if not s:
+            raise HTTPException(404, "Session not found")
+        msgs = c.execute("SELECT role, text FROM messages WHERE sid=? ORDER BY id", (sid,)).fetchall()
+        ents = c.execute("SELECT kind, value FROM entities WHERE sid=?", (sid,)).fetchall()
+    
+    transcript = "\n".join(f"{'Caller' if m['role'] == 'scammer' else 'Kamla Devi (AI)'}: {m['text']}" for m in msgs)
+    details = "\n".join(f"- {e['kind']}: {e['value']}" for e in ents) or "- None captured"
+    
+    report = f"""CYBERCRIME COMPLAINT DRAFT (cybercrime.gov.in)
+--------------------------------------------------
+Session ID: {sid}
+Incident Date: {time.strftime('%Y-%m-%d %H:%M', time.localtime(s['started']))}
+Scam Classification: {s['label']}
+Threat Score: {round(s['score'] * 100)}%
+
+CAPTURED SCAMMER DETAILS:
+{details}
+
+CALL TRANSCRIPT:
+{transcript}
+
+INSTRUCTIONS FOR FILING:
+1. Go to https://cybercrime.gov.in or call 1930 immediately.
+2. Submit the UPI IDs, phone numbers, and bank accounts listed above.
+3. Do not transfer any money or install remote-access apps (AnyDesk/QuickSupport).
+"""
+    return {"report": report}
 
 FRONT = HERE.parent / "frontend"
 if FRONT.is_dir():  # one-command mode: backend also serves the frontend

@@ -1,0 +1,2 @@
+# Optional: accurate offline speech recognition (downloads a model on first use)
+faster-whisper

@@ -1,1 +1,3 @@
-faster-whisper
+# Natural local voices (Kokoro, free and unlimited). Then run: python download_voice_models.py
+kokoro-onnx
+soundfile
