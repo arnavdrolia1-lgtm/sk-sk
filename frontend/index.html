@@ -12,32 +12,6 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,s
 h1,h2,.brand,#score{font-family:'Bricolage Grotesque',system-ui,sans-serif}
 h1{margin:0;font-size:30px;font-weight:800} h2{margin:0 0 10px;font-size:18px;font-weight:500}
 .sub{margin:0 0 18px;color:var(--muted)}
-
-/* landing page */
-#side,#app{display:none}
-body.app #side,body.app #app{display:block}
-body.app #landing{display:none}
-#landing{background:var(--ink);color:#fff}
-.hero{min-height:86vh;display:flex;flex-direction:column;justify-content:center;padding:60px 8vw;max-width:960px}
-.kicker{color:#9FB0BF;font-size:15px;margin:0 0 14px}
-.hero h1{font-size:clamp(32px,5.6vw,56px);line-height:1.06;margin:0 0 20px;max-width:15ch}
-.lead{font-size:18px;line-height:1.6;color:#C9D2DB;max-width:54ch;margin:0 0 30px}
-.cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-#landing button.primary{background:var(--red);border-color:var(--red);padding:14px 22px;font-size:16px}
-#landing button.ghost2{background:transparent;border:1px solid #45566a;color:#fff;padding:14px 20px}
-.trust{margin-top:28px;color:#8296a6;font-size:14px;max-width:52ch}
-.trust b{color:#fff}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:50px 8vw;background:var(--paper);color:var(--ink)}
-.step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px}
-.step b{font-size:26px;font-family:'Bricolage Grotesque',system-ui,sans-serif}
-.step h3{margin:12px 0 6px;font-size:17px}
-.step p{margin:0;color:var(--muted);font-size:14.5px}
-.statstrip{display:flex;gap:36px;flex-wrap:wrap;padding:28px 8vw;background:#0B141C}
-.statstrip div b{display:block;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:32px}
-.statstrip div span{color:#8296a6;font-size:13px}
-.landfoot{padding:22px 8vw 36px;color:var(--muted);font-size:13px;background:var(--paper);border-top:1px solid var(--line)}
-@media(max-width:820px){.steps{grid-template-columns:1fr}.statstrip{gap:24px}}
-
 /* sliding sidebar */
 #side{position:fixed;inset:0 auto 0 0;width:230px;background:var(--ink);color:#fff;padding:14px 10px;overflow:hidden;z-index:5;transition:width .3s}
 body.min #side{width:64px}
@@ -51,6 +25,7 @@ body.min #side{width:64px}
 body.min #app{margin-left:64px}
 .tab{display:none}.tab.on{display:block;animation:fade .3s}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}}
+.blank{min-height:240px;color:var(--muted)}
 /* live tab */
 .grid{display:grid;grid-template-columns:minmax(300px,400px) 1fr;gap:20px}
 .col{display:flex;flex-direction:column;gap:20px;min-width:0}
@@ -88,71 +63,68 @@ select{font:inherit;padding:6px;border-radius:6px;border:1px solid var(--line)}
 #log{height:340px;overflow:auto;display:flex;flex-direction:column;gap:8px}
 .m{max-width:85%;padding:8px 12px;border-radius:10px;animation:fade .25s}
 .m.scammer{background:#FBE3E6;align-self:flex-start}.m.honeypot{background:#D9F0EE;align-self:flex-end}
-.aitag{font-size:11px;opacity:.6;display:block;margin-top:2px}
 #interim{color:var(--muted)}
-.chatrow{display:flex;gap:8px;margin-top:12px}
-.chatrow input{flex:1;font:inherit;padding:9px 12px;border-radius:8px;border:1px solid var(--line)}
-.hint2{color:var(--muted);font-size:13px;margin:6px 0 0}
 pre{white-space:pre-wrap;font-size:13px;max-height:420px;overflow:auto;background:var(--paper);padding:12px;border-radius:8px}
 ul{margin:0 0 12px;padding-left:20px}
-/* new tabs: history / trends / reports / settings */
-.listrow{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.listrow:last-child{border-bottom:0}
-.listrow .meta{color:var(--muted);font-size:13px;margin-top:2px}
-.tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12.5px;background:rgba(0,0,0,.08);margin-left:6px}
-.tag.hot{background:rgba(215,38,61,.14);color:var(--red)}
-.kpis{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:18px}
-.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;min-width:130px}
-.kpi b{display:block;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:26px}
-.kpi span{color:var(--muted);font-size:13px}
-.trendrow{display:flex;align-items:center;gap:10px;margin:9px 0}
-.trendrow .lbl2{width:170px;font-size:14px}
-.trendrow .tbar{flex:1;height:10px;background:rgba(128,128,128,.2);border-radius:6px;overflow:hidden}
-.trendrow .tbar i{display:block;height:100%;background:var(--ink);font-style:normal}
-.trendrow .n{width:26px;text-align:right;font-size:13px;color:var(--muted)}
-#trendSpark{width:100%;height:60px}
-#trendSpark polyline{fill:none;stroke:var(--red);stroke-width:2}
-#trendSpark line{stroke:var(--line);stroke-dasharray:3 3}
+body.land #side,body.land #app{display:none}
+#landing{display:none;min-height:100vh;background:var(--ink);color:#fff;padding:0 6vw 40px}
+body.land #landing{display:block}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center;padding:36px 0}
+.hero h1{font-size:clamp(40px,6vw,76px);line-height:1;margin:0 0 18px}
+.hero h1 em{font-style:normal;color:#FF6B7A}
+.hero p{font-size:19px;color:#b9c6d2;max-width:540px}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.cta button{padding:13px 22px;font-size:17px;border-radius:10px}
+.cta .pri{background:var(--red);border-color:var(--red)}
+.mock{background:#16283a;border:1px solid #2b4157;border-radius:16px;padding:22px}
+.pill{display:inline-block;padding:4px 14px;border-radius:99px;font-weight:800;transition:background .5s}
+.mock .line{min-height:72px;margin:14px 0;color:#dbe6ef;font-size:18px}
+.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:30px 0}
+.feats div{background:#16283a;border-radius:12px;padding:18px;color:#b9c6d2}
+.feats b{display:block;font:800 20px 'Bricolage Grotesque';margin-bottom:6px;color:#fff}
+.help{color:#b9c6d2;border-top:1px solid #2b4157;padding-top:18px}
+@media(max-width:820px){.hero{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:20px}
+.kpi b{display:block;font:800 30px 'Bricolage Grotesque'}
+.hb{display:flex;align-items:center;gap:10px;margin:6px 0}
+.hb span{width:150px;font-size:14px}
+.hb div{height:14px;background:var(--red);border-radius:7px;min-width:4px;transition:width .6s}
+#say{font:inherit;padding:9px;border:1px solid var(--line);border-radius:8px;flex:1;min-width:0}
 </style>
 </head>
-<body>
-
+<body class="land">
 <div id="landing">
+  <div class="nav"><span class="brand" style="font-size:22px">Scammer Ko Scam Kar</span><button class="ghost" id="lgo0">Open dashboard</button></div>
   <div class="hero">
-    <p class="kicker">For families who still pick up the phone</p>
-    <h1>Keep the scammer talking, not your parents.</h1>
-    <p class="lead">Scammer Ko Scam Kar listens to a call as it happens, recognises fake-police, digital-arrest, KYC and courier scripts, and lets an AI decoy — a confused, chatty retired schoolteacher — stall the caller while it quietly writes down their UPI ID, account number and phone number.</p>
-    <div class="cta-row">
-      <button class="primary" id="enterApp">Open Live Guardian</button>
-      <button class="ghost2" id="seeSteps">See how it works</button>
+    <div>
+      <h1>Let them waste time on <em>Kamla Devi</em>, not on you.</h1>
+      <p>A live call guardian for India's digital-arrest, fake-CBI, courier and OTP scams. It spots the script as it happens, then an AI grandmother takes over the call and quietly collects the scammer's UPI ID, phone number and bank details for your police complaint.</p>
+      <div class="cta"><button class="pri" id="lgo">Launch Guardian</button><button class="ghost" id="ldemo">Watch a demo call</button></div>
     </div>
-    <p class="trust">Runs on your own machine; transcripts stay in a local file, nothing is uploaded elsewhere. If money has already been sent, call the national cyber-crime helpline <b>1930</b> before anything else.</p>
+    <div class="mock"><span class="pill" id="mpill">12%</span> <small>threat score</small><div class="line" id="mline"></div><small id="mtag" style="color:#8fa6ba"></small></div>
   </div>
-  <div class="steps" id="stepsAnchor">
-    <div class="step"><b>1</b><h3>Listen</h3><p>Every line the caller says is scored against known scam tactics — fake police, digital arrest, KYC threats, OTP requests — the moment it's said.</p></div>
-    <div class="step"><b>2</b><h3>Stall</h3><p>Past 60% confidence, Kamla Devi takes over the reply: hard of hearing, easily confused, and in absolutely no hurry to hang up.</p></div>
-    <div class="step"><b>3</b><h3>Report</h3><p>One click drafts a cybercrime.gov.in complaint with every identifier the caller gave away, ready to file.</p></div>
+  <div class="feats">
+    <div><b>Detect</b>Scores every sentence for fake authority, arrest threats, secrecy demands, urgency and payment pressure.</div>
+    <div><b>Stall</b>Kamla Devi, a confused 72-year-old, chats naturally and keeps the caller talking.</div>
+    <div><b>Capture</b>UPI IDs, phone numbers, accounts, IFSC codes and links are recorded as they are spoken.</div>
+    <div><b>Report</b>One click turns the call into a draft for cybercrime.gov.in.</div>
   </div>
-  <div class="statstrip" id="landStats">
-    <div><b id="lsCalls">–</b><span>calls analysed</span></div>
-    <div><b id="lsCaught">–</b><span>callers stalled</span></div>
-    <div><b id="lsEnts">–</b><span>details captured</span></div>
-  </div>
-  <div class="landfoot">This is a browser-based demo — it does not join a real phone line. Web Speech listening works best in Chrome or Edge; verify any captured identifier before filing a report.</div>
+  <p class="help">Lost money to a scam? Call <b>1930</b> right away and file at cybercrime.gov.in. Real police, CBI or courts never demand payment or hold you on a video call.</p>
 </div>
-
 <aside id="side">
   <div class="brand"><button id="burger" aria-label="Slide sidebar" style="width:auto;padding:8px 12px">☰</button><span class="lbl">Scammer Ko<br>Scam Kar</span></div>
   <nav>
-    <button class="tabbtn" id="homeBtn"><i>⌂</i><span class="lbl">Home</span></button>
     <button class="tabbtn on" data-tab="live"><i>●</i><span class="lbl">Live Guardian</span></button>
     <button class="tabbtn" data-tab="history"><i>◷</i><span class="lbl">Call History</span></button>
     <button class="tabbtn" data-tab="trends"><i>◎</i><span class="lbl">Scam Trends</span></button>
     <button class="tabbtn" data-tab="reports"><i>▤</i><span class="lbl">Reports</span></button>
     <button class="tabbtn" data-tab="settings"><i>⚙</i><span class="lbl">Settings</span></button>
+  <button id="home"><i>⌂</i><span class="lbl">Home</span></button>
   </nav>
 </aside>
-
 <div id="app">
 <section class="tab on" id="live">
   <h1>Live Guardian</h1><p class="sub">Scam-call detection with an AI honeypot</p>
@@ -168,6 +140,7 @@ ul{margin:0 0 12px;padding-left:20px}
         <svg id="spark" viewBox="0 0 200 40" preserveAspectRatio="none"><line x1="0" x2="200" y1="16" y2="16"/><polyline id="line" points=""/></svg>
         <div class="stats"><span>Mic</span><div class="bar"><div id="meter"></div></div><span>Pace <b id="pace">–</b></span></div>
         <p><button id="honey" disabled>Turn on Honeypot</button> <span id="timer"></span></p>
+        <label><input type="checkbox" id="practice"> Practice mode: chat with Kamla at any threat level</label><br>
         <small id="hint">Honeypot unlocks at 60% confidence.</small>
       </div>
       <div class="card">
@@ -181,12 +154,9 @@ ul{margin:0 0 12px;padding-left:20px}
       </div>
     </div>
     <div class="col">
-      <div class="card">
-        <h2>Live transcript</h2>
-        <div id="log"></div><em id="interim"></em>
-        <div class="chatrow"><input id="chatText" placeholder="Or type what the caller said…" autocomplete="off"><button id="chatSend">Send</button></div>
-        <p class="hint2">Typed lines go through the same detector as the mic. Mention things like police, OTP or a bank transfer to raise the threat score and unlock the honeypot.</p>
-      </div>
+      <div class="card"><h2>Live transcript</h2><div id="log"></div><em id="interim"></em>
+        <div class="row"><input id="say" type="text" placeholder="Or type as the caller and press Enter" autocomplete="off"><button id="send">Send</button></div>
+        <small id="reply-eng"></small></div>
       <div class="card">
         <h2>Details captured from the caller</h2>
         <ul id="ents"><li>Nothing yet</li></ul>
@@ -196,85 +166,72 @@ ul{margin:0 0 12px;padding-left:20px}
     </div>
   </div>
 </section>
-
-<section class="tab" id="history">
-  <h1>Call History</h1><p class="sub">Every call this backend has logged, newest first</p>
-  <div class="card"><div id="histList">Loading…</div></div>
-  <div class="card" id="histDetail" hidden></div>
-</section>
-
-<section class="tab" id="trends">
-  <h1>Scam Trends</h1><p class="sub">Aggregated across every call analysed so far</p>
-  <div class="kpis" id="kpis"></div>
-  <div class="card"><h2>Scam types seen</h2><div id="byLabel">Loading…</div></div>
-  <div class="card"><h2>Details captured, by kind</h2><div id="byEntity">Loading…</div></div>
-  <div class="card"><h2>Threat score, recent calls</h2>
-    <svg id="trendSpark" viewBox="0 0 200 40" preserveAspectRatio="none"><line x1="0" x2="200" y1="20" y2="20"/><polyline id="trendLine" points=""/></svg>
-  </div>
-</section>
-
-<section class="tab" id="reports">
-  <h1>Reports</h1><p class="sub">AI-drafted cybercrime.gov.in complaints generated from Live Guardian</p>
-  <div class="card"><div id="repList">Loading…</div></div>
-  <div class="card" id="repDetail" hidden><h2>Report</h2><pre id="repDetailText"></pre><button id="repDetailDl" class="ghost">Download</button></div>
-</section>
-
-<section class="tab" id="settings">
-  <h1>Settings</h1><p class="sub">AI status, defaults for new calls, and data controls</p>
-  <div class="card"><h2>AI engine</h2><div id="aiStatus">Checking…</div></div>
-  <div class="card">
-    <h2>Defaults for new calls</h2>
-    <div class="row">
-      <label>Language <select id="defLang"><option value="en-IN">English</option><option value="hi-IN">Hindi</option></select></label>
-      <label>Listening <select id="defEngine"><option value="browser">Browser (fast)</option><option value="whisper">Whisper (accurate)</option></select></label>
-    </div>
-  </div>
-  <div class="card">
-    <h2>Data</h2>
-    <p class="sub" style="margin-bottom:10px">Everything — transcripts, captured details, reports — lives in one local file, <code>backend/scam.db</code>.</p>
-    <button class="ghost" id="clearData">Clear all calls, reports and captured details</button>
-  </div>
-</section>
 </div>
-
 <script>
 const $=id=>document.getElementById(id),THRESH=.6,API_BASE='';  // API_BASE: set only if the frontend is hosted apart from the backend
 let sid,honey=false,micOn=false,speaking=false,demoing=false,chain=Promise.resolve(),t0,tick,last='',hist=[],ttsOK=true,peak=0,stream,recog,shown=0,raf;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms)),pick=a=>a[Math.floor(Math.random()*a.length)];
-const api=(u,b)=>fetch(API_BASE+u,{method:b?'POST':'GET',headers:{'Content-Type':'application/json'},body:b&&JSON.stringify(b)}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()});
+const api=(u,b,m)=>fetch(API_BASE+u,{method:m||(b?'POST':'GET'),headers:{'Content-Type':'application/json'},body:b&&JSON.stringify(b)}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()});
 const setStatus=t=>$('status').textContent=t;
-function el(tag,props={},...kids){const n=document.createElement(tag);
-  for(const[k,v]of Object.entries(props||{})){if(k==='class')n.className=v;else if(k.startsWith('on'))n[k.slice(2).toLowerCase()]=v;else if(k==='style')n.setAttribute('style',v);else n.setAttribute(k,v)}
-  kids.flat().forEach(k=>n.append(k&&k.nodeType?k:document.createTextNode(k==null?'':k)));return n}
-
-/* landing page */
-function showApp(){document.body.classList.add('app');localStorage.setItem('skk_entered','1')}
-function showLanding(){document.body.classList.remove('app')}
-$('enterApp').onclick=showApp;
-$('homeBtn').onclick=showLanding;
-$('seeSteps').onclick=()=>$('stepsAnchor').scrollIntoView({behavior:'smooth'});
-if(localStorage.getItem('skk_entered'))showApp();
-async function loadLandingStats(){
-  try{const s=await api('/api/stats');
-    $('lsCalls').textContent=s.total_calls;
-    $('lsCaught').textContent=s.honeypot_activations;
-    $('lsEnts').textContent=s.by_entity.reduce((a,e)=>a+e.n,0);
-  }catch{}
-}
-loadLandingStats();
 
 /* sidebar + tabs */
 $('burger').onclick=()=>document.body.classList.toggle('min');
 if(innerWidth<900)document.body.classList.add('min');
-const TAB_LOADERS={history:loadHistory,trends:loadTrends,reports:loadReports,settings:loadSettings};
-document.querySelectorAll('.tabbtn[data-tab]').forEach(b=>b.onclick=()=>{
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=s=>s>=60?`${Math.floor(s/60)}m ${Math.round(s%60)}s`:`${Math.round(s)}s`;
+const when=t=>new Date(t*1000).toLocaleString([],{dateStyle:'medium',timeStyle:'short'});
+const save=(txt,name)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));a.download=name;a.click()};
+const S=Object.assign({lang:'en-IN',engine:'browser',auto:true,voice:true},JSON.parse(localStorage.getItem('S')||'{}'));
+const T={
+ history:['Call History','Every analysed call. Open one to replay the transcript and captured details.','<div class="card"><div id="hlist">Loading…</div></div><div class="card" id="hview" hidden style="margin-top:20px"></div>'],
+ trends:['Scam Trends','What your calls show, and the red flags to remember.','<div class="kpis" id="kpis"></div><div class="grid"><div class="card"><h2>Scam types caught</h2><div id="bytype"></div></div><div class="card"><h2>Details captured</h2><div id="bykind"></div></div></div><div class="card" style="margin-top:20px"><h2>Red flags to remember</h2><ul><li>Real police, CBI or courts never arrest anyone over a phone or video call.</li><li>No agency asks you to move money to a "safe account" or to keep the call secret.</li><li>Banks never ask for your OTP, PIN or CVV.</li><li>Never install AnyDesk or QuickSupport for a stranger.</li></ul></div>'],
+ reports:['Reports','Turn any call into a draft complaint for cybercrime.gov.in.','<div class="card"><div id="rlist">Loading…</div></div><div class="card" id="rview" hidden style="margin-top:20px"><h2>Report</h2><pre id="rout"></pre><div class="row"><button id="rcopy">Copy</button><button id="rdl" class="ghost">Download</button></div></div>'],
+ settings:['Settings','Saved in this browser.','<div class="card"><h2>Preferences</h2><div class="row"><label>Language <select id="s-lang"><option value="en-IN">English</option><option value="hi-IN">Hindi</option></select></label> <label>Listening <select id="s-engine"><option value="browser">Browser (fast)</option><option value="whisper">Whisper (accurate)</option></select></label></div><div class="row"><label><input type="checkbox" id="s-auto"> Switch the honeypot on automatically at 60%</label></div><div class="row"><label><input type="checkbox" id="s-voice"> Speak aloud (caller and Kamla Devi)</label></div><div class="row"><label>Browser voice <select id="s-vname"></select></label> <button id="vt" class="ghost">Test voice</button></div></div><div class="card" style="margin-top:20px"><h2>System status</h2><div id="sysinfo">Checking…</div><div class="row"><button id="clr" class="ghost">Delete all saved calls</button></div></div>']
+};
+Object.entries(T).forEach(([id,[t,d,h]])=>{const s=document.createElement('section');s.className='tab';s.id=id;s.innerHTML=`<h1>${t}</h1><p class="sub">${d}</p>${h}`;$('app').append(s)});
+const KEYMAP={lang:'lang','s-lang':'lang',engine:'engine','s-engine':'engine'},store=()=>localStorage.setItem('S',JSON.stringify(S));
+function applyS(){['lang','s-lang'].forEach(i=>$(i).value=S.lang);['engine','s-engine'].forEach(i=>$(i).value=S.engine);$('s-auto').checked=S.auto;$('s-voice').checked=S.voice}
+Object.keys(KEYMAP).forEach(i=>$(i).onchange=e=>{S[KEYMAP[i]]=e.target.value;store();applyS()});
+[['s-auto','auto'],['s-voice','voice']].forEach(([i,k])=>$(i).onchange=e=>{S[k]=e.target.checked;store()});
+applyS();
+function pickVoice(who,text){
+  const hi=/[\u0900-\u097F]/.test(text),vs=speechSynthesis.getVoices(),want=hi?'hi':'en';
+  if(who==='honeypot'&&S.vname){const v=vs.find(v=>v.name===S.vname);if(v)return v}
+  const sc=v=>(/natural|neural|online|premium|enhanced/i.test(v.name)?4:0)+(/veena|lekha|neerja|swara|heera|rishi|prabhat|madhur/i.test(v.name)?3:0)+(v.lang.replace('_','-')===(hi?'hi-IN':'en-IN')?3:0)
+    +(who==='honeypot'?(/veena|lekha|neerja|swara|heera|female|samantha|zira/i.test(v.name)?2:0):(/rishi|prabhat|madhur|ravi|male|daniel|david/i.test(v.name)?2:0));
+  return vs.filter(v=>v.lang.toLowerCase().startsWith(want)).sort((a,b)=>sc(b)-sc(a))[0]||null}
+function fillVoices(){const vs=speechSynthesis.getVoices().filter(v=>/^(en|hi)/i.test(v.lang));
+  $('s-vname').innerHTML='<option value="">Automatic (best available)</option>'+vs.map(v=>`<option value="${esc(v.name)}">${esc(v.name)} (${esc(v.lang)})</option>`).join('');$('s-vname').value=S.vname||''}
+speechSynthesis.onvoiceschanged=fillVoices;fillVoices();
+$('s-vname').onchange=e=>{S.vname=e.target.value;store()};
+$('vt').onclick=()=>speak('Namaste beta, this is Kamla Devi. Can you speak a little slowly? My hearing is weak.','honeypot');
+const bars=(el,o)=>{const m=Math.max(1,...Object.values(o));el.innerHTML=Object.keys(o).length?Object.entries(o).map(([k,v])=>`<div class="hb"><span>${esc(k)}</span><div style="width:${v/m*60}%"></div><b>${v}</b></div>`).join(''):'Nothing yet.'};
+const rows=(r,cols,btn)=>r.length?`<table><tr><th>When</th><th>Type</th><th>Threat</th>${cols[0]}<th></th></tr>${r.map(s=>`<tr><td>${when(s.started)}</td><td>${esc(s.label)}</td><td>${Math.round(s.score*100)}%</td>${cols[1](s)}<td>${btn(s)}</td></tr>`).join('')}</table>`:'No calls yet. Run a demo call first.';
+const LOAD={
+ async history(){$('hlist').innerHTML=rows(await api('/api/sessions'),['<th>Msgs</th><th>Captured</th>',s=>`<td>${s.msgs}</td><td>${s.ents}</td>`],s=>`<button data-v="${s.id}">View</button> <button class="ghost" data-d="${s.id}">Delete</button>`)},
+ async trends(){const s=await api('/api/stats');
+  $('kpis').innerHTML=[[s.total,'calls analysed'],[s.flagged,'scams flagged'],[Math.round(s.avg*100)+'%','average threat'],[s.captured,'details captured'],[fmt(s.wasted),'scammer time wasted']].map(([n,l])=>`<div class="card kpi"><b>${n}</b>${l}</div>`).join('');
+  bars($('bytype'),s.by_label);bars($('bykind'),s.by_kind)},
+ async reports(){$('rlist').innerHTML=rows(await api('/api/sessions'),['',()=>''],s=>`<button data-g="${s.id}">Generate report</button>`)},
+ async settings(){const s=await api('/api/status?ping=1');$('sysinfo').innerHTML=Object.entries(s.lines).map(([k,v])=>`<p>${esc(k)}: <b>${esc(v)}</b></p>`).join('')}};
+async function view(id){const d=await api('/api/session/'+id),v=$('hview');v.hidden=false;
+  v.replaceChildren(Object.assign(document.createElement('h2'),{textContent:'Transcript'}));
+  d.messages.forEach(m=>{const x=document.createElement('div');x.className='m '+m.role;const b=document.createElement('b');b.textContent=m.role==='scammer'?'Caller':'Kamla Devi (AI)';x.append(b,document.createElement('br'),m.text);v.append(x)});
+  const u=document.createElement('ul');u.style.marginTop='14px';
+  (d.entities.length?d.entities:[{kind:'No details captured',value:''}]).forEach(e=>u.append(Object.assign(document.createElement('li'),{textContent:e.value?`${e.kind}: ${e.value}`:e.kind})));
+  v.append(u);v.scrollIntoView({behavior:'smooth'})}
+$('app').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;
+  try{
+  if(b.dataset.v)view(b.dataset.v);
+  if(b.dataset.d){await api('/api/session/'+b.dataset.d,null,'DELETE');$('hview').hidden=true;LOAD.history()}
+  if(b.dataset.g){last=(await api('/api/report/'+b.dataset.g)).report;$('rout').textContent=last;$('rview').hidden=false;$('rview').scrollIntoView({behavior:'smooth'})}
+  if(b.id==='rcopy')navigator.clipboard.writeText($('rout').textContent);
+  if(b.id==='rdl')save($('rout').textContent,'cyber-report.txt');
+  if(b.id==='clr'&&confirm('Delete every saved call?')){await api('/api/sessions',null,'DELETE');await reset();LOAD.settings()}
+  }catch{setStatus('Something went wrong. Check the terminal running uvicorn.')}});
+document.querySelectorAll('.tabbtn').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.tabbtn,.tab').forEach(e=>e.classList.remove('on'));
-  b.classList.add('on');$(b.dataset.tab).classList.add('on');
-  TAB_LOADERS[b.dataset.tab]&&TAB_LOADERS[b.dataset.tab]()});
-
-/* saved defaults (Settings tab) applied to the Live tab's own controls */
-const sLang=localStorage.getItem('skk_lang'),sEngine=localStorage.getItem('skk_engine');
-if(sLang)$('lang').value=sLang; if(sEngine)$('engine').value=sEngine;
+  b.classList.add('on');$(b.dataset.tab).classList.add('on');if(LOAD[b.dataset.tab])LOAD[b.dataset.tab]().catch(()=>{})});
 
 /* randomised demo calls */
 const num=n=>Array.from({length:n},()=>Math.floor(Math.random()*10)).join('');
@@ -309,20 +266,22 @@ const SCEN=[
 
 /* voice out: neural voice from backend, browser voice as fallback */
 async function speak(text,who){
+  if(!S.voice){await sleep(400);return 0}
   speaking=true;setStatus(who==='honeypot'?'Kamla Devi is speaking…':'Caller is speaking…');
   if(recog)try{recog.stop()}catch{}
   const say=text.replace(/\d{4,}/g,m=>m.split('').join(' '));let dur=0;
   try{
     if(!ttsOK)throw 0;
-    const r=await fetch(`${API_BASE}/api/tts?who=${who}&text=${encodeURIComponent(say)}`);
-    if(!r.ok)throw 0;
+    const r=await fetch(`${API_BASE}/api/tts?who=${who}&lang=${/[\u0900-\u097F]/.test(text)?'hi':'en'}&text=${encodeURIComponent(say)}`);
+    if(!r.ok)throw new Error((await r.json().catch(()=>({}))).detail||r.status);
     const a=new Audio(URL.createObjectURL(await r.blob()));
-    await Promise.race([new Promise((ok,no)=>{a.onended=ok;a.onerror=no;a.onloadedmetadata=()=>dur=a.duration;a.play().catch(no)}),sleep(30000).then(()=>{a.pause()})]);
+    await new Promise((ok,no)=>{a.onended=ok;a.onerror=no;a.onloadedmetadata=()=>dur=a.duration;a.play().catch(no)});
     $('eng').textContent='Voice: neural (edge-tts)';
-  }catch{
-    ttsOK=false;$('eng').textContent='Voice: browser (neural voice unavailable, is edge-tts installed?)';
+  }catch(err){
+    ttsOK=false;$('eng').textContent='Voice: browser voice ('+((err&&err.message)||'neural voice off')+')';
     const s=performance.now();
-    await Promise.race([new Promise(ok=>{const u=new SpeechSynthesisUtterance(say);u.lang='en-IN';u.pitch=who==='honeypot'?1.4:.7;u.rate=who==='honeypot'?.85:1;u.onend=u.onerror=ok;speechSynthesis.speak(u)}),sleep(30000).then(()=>speechSynthesis.cancel())]);
+    await new Promise(ok=>{const u=new SpeechSynthesisUtterance(say),v=pickVoice(who,text);if(v){u.voice=v;u.lang=v.lang}else u.lang=/[\u0900-\u097F]/.test(text)?'hi-IN':'en-IN';
+      u.pitch=who==='honeypot'?1:.9;u.rate=who==='honeypot'?.92:1.05;u.onend=u.onerror=ok;speechSynthesis.speak(u)});
     dur=(performance.now()-s)/1000;
   }
   speaking=false;setStatus(micOn?'Listening…':'');
@@ -335,23 +294,20 @@ function paint(v){$('score').textContent=Math.round(v*100)+'%';
   const a=$('arc');a.style.strokeDashoffset=339.3*(1-v);a.style.stroke=`hsl(${130-130*v} 70% 42%)`}
 function animate(to){cancelAnimationFrame(raf);const from=shown,s=performance.now();
   const step=t=>{const k=Math.min(1,(t-s)/900);shown=from+(to-from)*(1-Math.pow(1-k,3));paint(shown);if(k<1)raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)}
-function render(a){
+function render(a,upd){
   animate(a.score);$('label').textContent=a.label;
   $('threat').className='card '+(a.score>=THRESH?'alert':a.score>=.3?'warn':'');
   $('tactics').replaceChildren(...a.tactics.map(t=>Object.assign(document.createElement('span'),{className:'chip',textContent:t})));
-  hist=a.score?[...hist,a.score]:[];const n=hist.length;
+  hist=a.score?(upd?[...hist.slice(0,-1),a.score]:[...hist,a.score]):[];const n=hist.length;
   $('line').setAttribute('points',hist.map((v,i)=>`${n>1?i*200/(n-1):0},${40-v*40}`).join(' '));
-  $('honey').disabled=a.score<THRESH&&!honey;
+  $('honey').disabled=a.score<THRESH&&!honey&&!$('practice').checked;
   $('hint').textContent=a.score>=THRESH?'Fraud detected. Honeypot ready.':'Honeypot unlocks at 60% confidence.';
   const es=a.entities.length?a.entities:[{kind:'Nothing yet',value:''}];
   $('ents').replaceChildren(...es.map(e=>Object.assign(document.createElement('li'),{textContent:e.value?`${e.kind}: ${e.value}`:e.kind})));
 }
-function addMsg(role,text,ai,why){
+function addMsg(role,text){
   const d=document.createElement('div');d.className='m '+role;const b=document.createElement('b');
-  b.textContent=role==='scammer'?'Caller':'Kamla Devi (AI)';d.append(b,document.createElement('br'),text);
-  if(role==='honeypot'&&ai!==undefined){const s=document.createElement('span');s.className='aitag';
-    s.textContent=ai?'AI-generated reply':'Rule-based reply (AI unavailable — check Settings)';if(!ai&&why){s.title=why;const w=document.createElement('div');w.className='aitag';w.textContent='Reason: '+why;d.append(s,w)}else d.append(s)}
-  $('log').append(d);$('log').scrollTop=1e9}
+  b.textContent=role==='scammer'?'Caller':'Kamla Devi (AI)';d.append(b,document.createElement('br'),text);$('log').append(d);$('log').scrollTop=1e9}
 function setHoney(on){
   honey=on;$('honey').textContent=on?'Honeypot on: AI is answering':'Turn on Honeypot';clearInterval(tick);$('timer').textContent='';
   if(on){t0=Date.now();tick=setInterval(()=>{const s=Math.floor((Date.now()-t0)/1000);$('timer').textContent=`Caller engaged ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`},1000)}}
@@ -362,21 +318,17 @@ async function handle(text,pace=0){
   if(pace){$('pace').textContent=Math.round(pace)+' wpm'}
   try{
     const a=await api('/api/analyze',{sid,text,pace:Math.round(pace)});render(a);
-    // Auto-engage the honeypot as soon as a real call crosses the threshold, in every mode
-    // (demo, mic or typed chat) -- previously this only fired during a scripted demo, so a
-    // real live call never got the AI decoy talking back or capturing details.
-    if(a.score>=THRESH&&!honey)setHoney(true);
-    if(honey&&a.score>=THRESH){const r=await api('/api/honeypot',{sid,text});addMsg('honeypot',r.reply,r.ai,r.why);await speak(r.reply,'honeypot')}
+    if(!honey&&($('practice').checked||(a.score>=THRESH&&(demoing||S.auto))))setHoney(true);
+    const en=()=>api('/api/enrich',{sid,text,pace:Math.round(pace)}).then(x=>render(x,true)).catch(()=>{});
+    if(honey){const r=await api('/api/honeypot',{sid,text,lang:$('lang').value});addMsg('honeypot',r.reply);
+      $('reply-eng').textContent='Reply engine: '+(r.engine==='offline'?'offline rules'+(r.why?` (${r.why})`:''):r.engine);
+      const e=en();await speak(r.reply,'honeypot');await e}
+    else en();
   }catch{setStatus('Server error. Check the terminal running uvicorn.')}
 }
 async function reset(){
   sid=(await api('/api/session',{})).sid;$('log').replaceChildren();setHoney(false);hist=[];ttsOK=true;
   render({score:0,label:'Listening…',tactics:[],entities:[]});$('pace').textContent='–';$('repbox').hidden=true}
-
-/* manual one-on-one chat: type a line, it goes through the same pipeline as mic/demo audio */
-function sendChat(){const t=$('chatText').value.trim();if(!t)return;$('chatText').value='';chain=chain.then(()=>handle(t))}
-$('chatSend').onclick=sendChat;
-$('chatText').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();sendChat()}};
 
 $('demo').onclick=async()=>{
   if(micOn)$('mic').click();
@@ -393,37 +345,24 @@ function meter(){
     an.getByteTimeDomainData(buf);let m=0;for(const v of buf)m=Math.max(m,Math.abs(v-128)/128);
     peak=Math.max(peak,m);$('meter').style.width=Math.min(100,m*220)+'%';requestAnimationFrame(loop)})()}
 function recordLoop(){   // Whisper: 5-second chunks, silence is never sent
-  if(!micOn)return;peak=0;
-  const mime=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg'].find(t=>window.MediaRecorder&&MediaRecorder.isTypeSupported(t))||'';
-  let r;try{r=new MediaRecorder(stream,mime?{mimeType:mime}:undefined)}catch(e){return setStatus('This browser cannot record audio: '+e.message+'. Switch Listening to Browser.')}
-  const parts=[];
-  r.ondataavailable=e=>e.data&&e.data.size&&parts.push(e.data);
-  r.onstop=async()=>{const ok=!speaking&&peak>.03&&parts.length;recordLoop();if(!ok)return;   // .03: a phone speaker across the room is quiet
-    try{const blob=new Blob(parts,{type:r.mimeType||mime||'audio/webm'});
-      const res=await fetch(`${API_BASE}/api/transcribe?lang=${$('lang').value.slice(0,2)}`,{method:'POST',headers:{'Content-Type':blob.type},body:blob});
-      if(!res.ok){const d=await res.text();throw new Error(d.slice(0,160)||res.status)}
-      const t=((await res.json()).text||'').trim();
-      if(t.split(/\s+/).length>1){setStatus('Listening…');chain=chain.then(()=>handle(t))}}
-    catch(e){setStatus('Whisper failed: '+e.message+' — check the terminal, or switch Listening to Browser.')}};
+  if(!micOn)return;peak=0;const parts=[],r=new MediaRecorder(stream);
+  r.ondataavailable=e=>parts.push(e.data);
+  r.onstop=async()=>{const ok=!speaking&&peak>.08;recordLoop();if(!ok)return;
+    try{const res=await fetch(`${API_BASE}/api/transcribe?lang=${$('lang').value.slice(0,2)}`,{method:'POST',body:new Blob(parts,{type:'audio/webm'})});
+      if(!res.ok)throw 0;const t=((await res.json()).text||'').trim();
+      if(t.split(' ').length>1)chain=chain.then(()=>handle(t))}
+    catch{setStatus('Whisper unavailable: pip install faster-whisper, or switch Listening to Browser.')}};
   r.start();setTimeout(()=>r.state==='recording'&&r.stop(),5000)}
 function startRecog(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR)return setStatus('Browser listening needs Chrome or Edge. Use Whisper instead.');
-  if(/^((?!chrome|android|edg).)*safari/i.test(navigator.userAgent))setStatus('Safari\'s speech recogniser is unreliable here. Use Chrome/Edge, or set Listening to Whisper.');
-  recog=new SR();recog.lang=$('lang').value;recog.continuous=true;recog.interimResults=true;let ts=0,fatal=false,fails=0;
-  const MSG={'not-allowed':'Microphone blocked. Click the lock icon in the address bar, allow the microphone, then try again.',
-    'service-not-allowed':'Speech service is blocked by the browser or OS. Use Whisper instead.',
-    'network':'Chrome could not reach Google\'s speech service (needs internet). Use Whisper instead.',
-    'audio-capture':'No microphone found or another app is using it.','language-not-supported':'That language is not supported by browser listening. Use Whisper.'};
-  recog.onerror=e=>{if(e.error==='no-speech'||e.error==='aborted')return;   // normal: silence, or we stopped it while Kamla speaks
-    if(MSG[e.error]){setStatus(MSG[e.error]);if(e.error!=='network')fatal=true}else setStatus('Speech error: '+e.error);
-    if(++fails>=3||fatal){micOn=false;$('mic').textContent='Use microphone';stream&&stream.getTracks().forEach(t=>t.stop())}};
-  recog.onresult=e=>{fails=0;let tmp='';
+  recog=new SR();recog.lang=$('lang').value;recog.continuous=true;recog.interimResults=true;let ts=0;
+  recog.onresult=e=>{let tmp='';
     for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(!ts)ts=performance.now();
       if(r.isFinal){const t=r[0].transcript.trim(),w=t.split(/\s+/).length,sec=(performance.now()-ts)/1000;ts=0;$('interim').textContent='';
         chain=chain.then(()=>handle(t,w>=6?w/sec*60:0))}else tmp=r[0].transcript}
     if(tmp)$('interim').textContent=tmp};
-  recog.onend=()=>{if(micOn&&!speaking&&!fatal)setTimeout(()=>{try{recog.start()}catch{}},250)};recog.start()}
+  recog.onend=()=>{if(micOn&&!speaking)try{recog.start()}catch{}};recog.start()}
 $('mic').onclick=async()=>{
   if(micOn){micOn=false;if(recog)recog.stop();stream&&stream.getTracks().forEach(t=>t.stop());$('mic').textContent='Use microphone';setStatus('');return}
   try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}catch{return alert('Microphone permission is needed.')}
@@ -434,100 +373,15 @@ $('rep').onclick=async()=>{
   try{const r=await api('/api/report/'+sid);last=r.report;$('repout').textContent=last;$('repbox').hidden=false;$('repbox').scrollIntoView({behavior:'smooth'})}
   catch{setStatus('Could not build the report. Check the terminal.')}};
 $('dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([last],{type:'text/plain'}));a.download=`cyber-report-${sid}.txt`;a.click()};
-
-/* ---- Call History tab ---- */
-async function loadHistory(){
-  const list=$('histList');list.textContent='Loading…';$('histDetail').hidden=true;
-  let rows;try{rows=await api('/api/sessions')}catch{list.textContent='Could not reach the server.';return}
-  if(!rows.length){list.textContent='No calls yet — run a demo or start a call from Live Guardian.';return}
-  list.replaceChildren(...rows.map(r=>{
-    const when=new Date(r.started*1000).toLocaleString();
-    return el('div',{class:'listrow'},
-      el('div',{},
-        el('div',{},`${r.label} `,el('span',{class:'tag'+(r.score>=THRESH?' hot':'')},Math.round(r.score*100)+'%')),
-        el('div',{class:'meta'},`${when} · ${r.messages} messages · ${r.entities} details captured${r.honeypot?' · honeypot used':''}`)),
-      el('div',{class:'row',style:'margin:0'},
-        el('button',{class:'ghost',onClick:()=>viewSession(r.id)},'View'),
-        el('button',{class:'ghost',onClick:()=>deleteSession(r.id)},'Delete')));
-  }));
-}
-async function viewSession(id){
-  let d;try{d=await api('/api/session/'+id)}catch{return}
-  const box=$('histDetail');box.hidden=false;
-  box.replaceChildren(
-    el('h2',{},'Transcript — '+id),
-    el('div',{},...(d.messages.length?d.messages.map(m=>el('div',{style:'margin:4px 0'},
-      el('b',{},m.role==='scammer'?'Caller: ':'Honeypot: '),m.text)):[el('div',{class:'meta'},'No messages recorded.')])),
-    el('h2',{style:'margin-top:16px'},'Details captured'),
-    el('ul',{},...(d.entities.length?d.entities.map(e=>el('li',{},`${e.kind}: ${e.value}`)):[el('li',{},'Nothing captured')])));
-  box.scrollIntoView({behavior:'smooth'});
-}
-async function deleteSession(id){
-  if(!confirm('Delete this call, its transcript and any report from it? This cannot be undone.'))return;
-  try{await fetch(`${API_BASE}/api/session/${id}`,{method:'DELETE'})}catch{}
-  loadHistory();
-}
-
-/* ---- Scam Trends tab ---- */
-function barRow(label,n,max){
-  return el('div',{class:'trendrow'},el('div',{class:'lbl2'},label),
-    el('div',{class:'tbar'},el('i',{style:`width:${max?Math.round(n/max*100):0}%`})),
-    el('div',{class:'n'},String(n)));
-}
-async function loadTrends(){
-  let s;try{s=await api('/api/stats')}catch{$('kpis').textContent='Could not reach the server.';return}
-  $('kpis').replaceChildren(
-    el('div',{class:'kpi'},el('b',{},String(s.total_calls)),el('span',{},'calls analysed')),
-    el('div',{class:'kpi'},el('b',{},String(s.flagged_calls)),el('span',{},'flagged ≥ 60%')),
-    el('div',{class:'kpi'},el('b',{},String(s.honeypot_activations)),el('span',{},'honeypot activations')),
-    el('div',{class:'kpi'},el('b',{},Math.round(s.avg_score*100)+'%'),el('span',{},'average threat score')));
-  const maxLabel=Math.max(1,...s.by_label.map(x=>x.n)),maxEnt=Math.max(1,...s.by_entity.map(x=>x.n));
-  $('byLabel').replaceChildren(...(s.by_label.length?s.by_label.map(l=>barRow(l.label,l.n,maxLabel)):[el('div',{class:'meta'},'Nothing classified yet.')]));
-  $('byEntity').replaceChildren(...(s.by_entity.length?s.by_entity.map(e=>barRow(e.kind,e.n,maxEnt)):[el('div',{class:'meta'},'No details captured yet.')]));
-  const h=s.score_trend,n=h.length;
-  $('trendLine').setAttribute('points',n?h.map((v,i)=>`${n>1?i*200/(n-1):0},${40-v*40}`).join(' '):'');
-}
-
-/* ---- Reports tab ---- */
-function downloadReport(r){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([r.text],{type:'text/plain'}));a.download=`cyber-report-${r.sid}.txt`;a.click()}
-function viewReport(r){$('repDetail').hidden=false;$('repDetailText').textContent=r.text;$('repDetailDl').onclick=()=>downloadReport(r);$('repDetail').scrollIntoView({behavior:'smooth'})}
-async function loadReports(){
-  const list=$('repList');list.textContent='Loading…';$('repDetail').hidden=true;
-  let rows;try{rows=await api('/api/reports')}catch{list.textContent='Could not reach the server.';return}
-  if(!rows.length){list.textContent='No reports generated yet — use "Generate cybercrime report" in Live Guardian.';return}
-  list.replaceChildren(...rows.map(r=>{
-    const when=new Date(r.ts*1000).toLocaleString();
-    return el('div',{class:'listrow'},
-      el('div',{},el('div',{},`${r.label} `,el('span',{class:'tag'},Math.round(r.score*100)+'%')),el('div',{class:'meta'},`${when} · session ${r.sid}`)),
-      el('div',{class:'row',style:'margin:0'},el('button',{class:'ghost',onClick:()=>viewReport(r)},'View'),el('button',{class:'ghost',onClick:()=>downloadReport(r)},'Download')));
-  }));
-}
-
-/* ---- Settings tab ---- */
-async function loadSettings(){
-  const box=$('aiStatus');box.textContent='Checking…';
-  try{
-    const h=await api('/api/health?probe=1');
-    const lines=[];
-    if(!h.ai_configured)lines.push('No Groq key set — running on the rule engine and canned replies only.');
-    else if(h.ai_last_ok===false)lines.push('Groq key is set, but the last call failed — replies are falling back to the rule engine.');
-    else lines.push('Groq key is set'+(h.ai_last_ok?' and the last call succeeded.':'; no call made yet this session.'));
-    box.replaceChildren(
-      el('div',{},lines[0]),
-      el('div',{class:'meta'},`Chat model: ${h.fast_model} · Report model: ${h.smart_model} · Whisper: ${h.whisper_model} · Honeypot unlocks at ${Math.round(h.threshold*100)}%`),
-      el('div',{class:'meta'},h.ai_probe?'Live test just now: OK (model replied "'+h.ai_probe+'")':'Live test just now: FAILED'),
-      ...(h.ai_last_error?[el('div',{class:'meta'},'Last error: '+h.ai_last_error)]:[]));
-  }catch{box.textContent='Could not reach the server.'}
-}
-$('defLang').value=$('lang').value; $('defEngine').value=$('engine').value;
-$('defLang').onchange=()=>{localStorage.setItem('skk_lang',$('defLang').value);$('lang').value=$('defLang').value};
-$('defEngine').onchange=()=>{localStorage.setItem('skk_engine',$('defEngine').value);$('engine').value=$('defEngine').value};
-$('clearData').onclick=async()=>{
-  if(!confirm('Delete every call, entity and report on this backend? This cannot be undone.'))return;
-  try{await fetch(`${API_BASE}/api/sessions`,{method:'DELETE'})}catch{}
-  loadHistory();loadTrends();loadReports();loadLandingStats();
-};
-
+const cur=()=>hist[hist.length-1]||0;
+$('practice').onchange=()=>{$('honey').disabled=cur()<THRESH&&!honey&&!$('practice').checked};
+const sendTyped=()=>{const t=$('say').value.trim();if(t){$('say').value='';chain=chain.then(()=>handle(t))}};
+$('send').onclick=sendTyped;$('say').onkeydown=e=>{if(e.key==='Enter')sendTyped()};
+const MOCK=[[12,'#1f7a4d','"Hello, this is Inspector Rajesh from Mumbai Police."','Listening'],[58,'#c98a0a','"A parcel under your Aadhaar was seized with illegal drugs."','Fake authority + parcel'],[91,'#D7263D','"You are under digital arrest. Do not tell anyone."','Isolation + arrest threat'],[98,'#D7263D','Kamla: "Beta, what parcel? Say your UPI ID slowly, I am writing."','Honeypot engaged']];
+let mi=0;const mock=()=>{const m=MOCK[mi++%MOCK.length];$('mpill').textContent=m[0]+'%';$('mpill').style.background=m[1];$('mline').textContent=m[2];$('mtag').textContent=m[3]};
+mock();setInterval(mock,2400);
+const enter=()=>document.body.classList.remove('land');
+$('lgo').onclick=$('lgo0').onclick=enter;$('ldemo').onclick=()=>{enter();$('demo').click()};$('home').onclick=()=>document.body.classList.add('land');
 reset();
 </script>
 </body>
