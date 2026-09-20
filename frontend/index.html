@@ -3,108 +3,179 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Scammer Ko Scam Kar</title>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&display=swap" rel="stylesheet">
+<title>Scammer Ko Scam Kar | Live scam-call guardian</title>
+<meta name="description" content="Detects digital-arrest, fake-CBI and OTP scam calls live, then an AI grandmother stalls the caller in your language and records their details.">
+<meta name="theme-color" content="#F7F3EC">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23C2410C' d='M12 2l8 3v6c0 5.5-3.4 9.3-8 11-4.6-1.7-8-5.5-8-11V5z'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..700&family=Young+Serif&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#EEF1F4;--ink:#101C28;--line:#C9D2DB;--red:#D7263D;--amber:#E8A317;--muted:#5B6B7A}
+:root{--bg:#F5F2EB;--card:#fff;--ink:#14213D;--mut:#667085;--line:#E6E1D5;--acc:#FF9933;--grn:#138808;--red:#D7263D;--side:#14213D;--sh:0 6px 24px rgba(20,33,61,.08)}
+[data-theme=dark]{--bg:#0B1220;--card:#131C31;--ink:#EEF2F8;--mut:#93A1B8;--line:#233049;--side:#070C17;--sh:0 6px 24px rgba(0,0,0,.4)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,sans-serif}
-h1,h2,.brand,#score{font-family:'Bricolage Grotesque',system-ui,sans-serif}
-h1{margin:0;font-size:30px;font-weight:800} h2{margin:0 0 10px;font-size:18px;font-weight:500}
-.sub{margin:0 0 18px;color:var(--muted)}
-/* sliding sidebar */
-#side{position:fixed;inset:0 auto 0 0;width:230px;background:var(--ink);color:#fff;padding:14px 10px;overflow:hidden;z-index:5;transition:width .3s}
-body.min #side{width:64px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;line-height:1.1;margin-bottom:20px;white-space:nowrap}
-#side button{display:flex;align-items:center;gap:12px;width:100%;padding:11px 14px;background:none;border:0;border-radius:8px;color:#cfd8e0;cursor:pointer;font:inherit;text-align:left;white-space:nowrap}
-#side button:hover{background:rgba(255,255,255,.1)}
-#side .tabbtn.on{background:#fff;color:var(--ink)}
-#side i{font-style:normal;width:20px;text-align:center;flex:none}
-.lbl{transition:opacity .2s} body.min .lbl{opacity:0}
-#app{margin-left:230px;padding:24px 28px;transition:margin .3s}
-body.min #app{margin-left:64px}
-.tab{display:none}.tab.on{display:block;animation:fade .3s}
-@keyframes fade{from{opacity:0;transform:translateY(6px)}}
-.blank{min-height:240px;color:var(--muted)}
-/* live tab */
-.grid{display:grid;grid-template-columns:minmax(300px,400px) 1fr;gap:20px}
-.col{display:flex;flex-direction:column;gap:20px;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,'Noto Sans',sans-serif;transition:background .3s}
+h1,h2,.brand,.big{font-family:'Bricolage Grotesque',system-ui,sans-serif}
+h1{margin:0;font-size:30px;font-weight:800}h2{margin:0 0 14px;font-size:17px;font-weight:600}.sub{margin:2px 0 0;color:var(--mut)}
+button{font:inherit;padding:10px 18px;border-radius:10px;border:1px solid var(--side);background:var(--side);color:#fff;cursor:pointer;font-weight:600;transition:transform .1s,opacity .2s}
+[data-theme=dark] button{background:var(--acc);border-color:var(--acc);color:#111}
+button:active{transform:scale(.97)}button:disabled{opacity:.4;cursor:not-allowed}
+button.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+button.rec{background:var(--red);border-color:var(--red);color:#fff}
+select,input[type=text]{font:inherit;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0}.mut{color:var(--mut);font-size:14px}
+
+/* shell */
+#side{position:fixed;inset:0 auto 0 0;width:236px;background:var(--side);color:#fff;padding:22px 14px;z-index:5;transition:width .3s;overflow:hidden}
+#side:before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,#FF9933 33%,#fff 33% 66%,#138808 66%)}
+body.min #side{width:68px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:17px;line-height:1.1;margin:8px 0 26px;white-space:nowrap}
+#side nav button{display:flex;gap:12px;width:100%;margin-bottom:4px;background:none;border:0;text-align:left;white-space:nowrap;opacity:.75;font-weight:500}
+#side nav button:hover{background:rgba(255,255,255,.1);opacity:1}#side nav button.on{background:var(--acc);color:#111;opacity:1;font-weight:700}
+#side i{font-style:normal;width:20px;text-align:center}body.min .lbl{opacity:0}
+#app{margin-left:236px;padding:30px;transition:margin .3s}body.min #app{margin-left:68px}
+.tab{display:none}.tab.on{display:block;animation:up .3s}@keyframes up{from{opacity:0;transform:translateY(8px)}}
+.grid{display:grid;grid-template-columns:minmax(300px,400px) 1fr;gap:22px;margin-top:18px}.col{display:flex;flex-direction:column;gap:22px;min-width:0}
 @media(max-width:900px){.grid{grid-template-columns:1fr}#app{padding:18px 14px}}
-.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;transition:background .4s,color .4s,border-color .4s}
-.card.warn{border-color:var(--amber);border-width:2px}
-.card.alert{background:var(--red);color:#fff;border-color:var(--red);animation:pulse 1s 3}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--sh);transition:background .4s,border-color .4s}
+.top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px}
+.pill{display:inline-block;padding:5px 13px;border-radius:99px;background:var(--card);border:1px solid var(--line);font-size:13px;font-weight:600}
+
+/* pipeline steps */
+.steps{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.steps span{padding:6px 14px;border-radius:99px;font-size:13px;font-weight:600;background:var(--card);border:1px solid var(--line);color:var(--mut);transition:.25s}
+.steps span.on{background:var(--acc);border-color:var(--acc);color:#111;box-shadow:0 0 0 4px rgba(255,153,51,.25)}
+
+/* threat card */
+.card.warn{border:2px solid var(--acc)}.card.alert{background:var(--red);color:#fff;border-color:var(--red);animation:pulse 1s 3}
 @keyframes pulse{50%{box-shadow:0 0 0 14px rgba(215,38,61,.25)}}
-@media(prefers-reduced-motion:reduce){.card.alert,.tab.on{animation:none}}
-.gauge{position:relative;width:190px;height:190px;margin:0 auto}
-.gauge svg{width:100%;height:100%}
-.gauge circle{fill:none;stroke-width:9;stroke-linecap:round}
-.track{stroke:rgba(128,128,128,.22)}
-#arc{transition:stroke .3s}
-.alert #arc{stroke:#fff!important}
+.gauge{position:relative;width:190px;height:190px;margin:0 auto}.gauge svg{width:100%;height:100%}
+.gauge circle{fill:none;stroke-width:10;stroke-linecap:round}.track{stroke:rgba(128,128,128,.18)}#arc{transition:stroke .3s}.alert #arc{stroke:#fff!important}
 .gauge div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-#score{font-size:54px;font-weight:800;line-height:1}
-#label{text-align:center;font-size:19px;margin-top:8px}
-#tactics{text-align:center}
-.chip{display:inline-block;padding:2px 10px;margin:8px 4px 0;border-radius:99px;background:rgba(0,0,0,.08);font-size:14px}
-.alert .chip{background:rgba(255,255,255,.22)}
-#spark{width:100%;height:44px;margin-top:12px}
-#spark polyline{fill:none;stroke:currentColor;stroke-width:2;vector-effect:non-scaling-stroke}
-#spark line{stroke:currentColor;opacity:.4;stroke-dasharray:3 3;vector-effect:non-scaling-stroke}
-.stats{display:flex;gap:14px;align-items:center;margin-top:10px;font-size:14px}
-.bar{flex:1;height:8px;background:rgba(128,128,128,.25);border-radius:9px;overflow:hidden}
-#meter{height:100%;width:0;background:currentColor;transition:width .08s}
-button{font:inherit;padding:9px 14px;border-radius:8px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
-button.ghost{background:transparent;color:inherit;border-color:currentColor}
-button:disabled{opacity:.4;cursor:not-allowed}
-select{font:inherit;padding:6px;border-radius:6px;border:1px solid var(--line)}
-:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
-.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0}
-#status,#eng{color:var(--muted);font-size:14px}
-#log{height:340px;overflow:auto;display:flex;flex-direction:column;gap:8px}
-.m{max-width:85%;padding:8px 12px;border-radius:10px;animation:fade .25s}
-.m.scammer{background:#FBE3E6;align-self:flex-start}.m.honeypot{background:#D9F0EE;align-self:flex-end}
-#interim{color:var(--muted)}
-pre{white-space:pre-wrap;font-size:13px;max-height:420px;overflow:auto;background:var(--paper);padding:12px;border-radius:8px}
-ul{margin:0 0 12px;padding-left:20px}
-body.land #side,body.land #app{display:none}
-#landing{display:none;min-height:100vh;background:var(--ink);color:#fff;padding:0 6vw 40px}
-body.land #landing{display:block}
-.nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
-.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center;padding:36px 0}
-.hero h1{font-size:clamp(40px,6vw,76px);line-height:1;margin:0 0 18px}
-.hero h1 em{font-style:normal;color:#FF6B7A}
-.hero p{font-size:19px;color:#b9c6d2;max-width:540px}
-.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
-.cta button{padding:13px 22px;font-size:17px;border-radius:10px}
-.cta .pri{background:var(--red);border-color:var(--red)}
-.mock{background:#16283a;border:1px solid #2b4157;border-radius:16px;padding:22px}
-.pill{display:inline-block;padding:4px 14px;border-radius:99px;font-weight:800;transition:background .5s}
-.mock .line{min-height:72px;margin:14px 0;color:#dbe6ef;font-size:18px}
-.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:30px 0}
-.feats div{background:#16283a;border-radius:12px;padding:18px;color:#b9c6d2}
-.feats b{display:block;font:800 20px 'Bricolage Grotesque';margin-bottom:6px;color:#fff}
-.help{color:#b9c6d2;border-top:1px solid #2b4157;padding-top:18px}
-@media(max-width:820px){.hero{grid-template-columns:1fr}}
-table{width:100%;border-collapse:collapse;font-size:15px}
-th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:20px}
-.kpi b{display:block;font:800 30px 'Bricolage Grotesque'}
-.hb{display:flex;align-items:center;gap:10px;margin:6px 0}
-.hb span{width:150px;font-size:14px}
-.hb div{height:14px;background:var(--red);border-radius:7px;min-width:4px;transition:width .6s}
-#say{font:inherit;padding:9px;border:1px solid var(--line);border-radius:8px;flex:1;min-width:0}
+#score{font-size:54px;font-weight:800;line-height:1}#label{text-align:center;font-size:19px;margin-top:8px;font-weight:600}#tactics{text-align:center}
+.chip{display:inline-block;padding:4px 12px;margin:6px 3px 0;border-radius:99px;background:rgba(128,128,128,.13);font-size:13px;font-weight:600}.alert .chip{background:rgba(255,255,255,.22)}
+#spark{width:100%;height:44px;margin-top:14px}#spark polyline{fill:none;stroke:currentColor;stroke-width:2;vector-effect:non-scaling-stroke}
+#spark line{stroke:currentColor;opacity:.25;stroke-dasharray:3 3;vector-effect:non-scaling-stroke}
+.bar{flex:1;height:8px;background:rgba(128,128,128,.2);border-radius:9px;overflow:hidden}#meter{height:100%;width:0;background:var(--grn);transition:width .06s}
+
+/* transcript */
+#log{height:380px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding-right:6px}
+.m{max-width:86%;padding:10px 14px;border-radius:14px;animation:up .25s}.m small{display:block;font-weight:700;font-size:12px;opacity:.7;margin-bottom:2px}
+.m.scammer{background:rgba(215,38,61,.1);align-self:flex-start;border-bottom-left-radius:4px}
+.m.honeypot{background:rgba(255,153,51,.18);align-self:flex-end;border-bottom-right-radius:4px}
+.dots i{display:inline-block;width:7px;height:7px;margin:0 2px;border-radius:50%;background:currentColor;opacity:.4;animation:bl 1s infinite}.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes bl{50%{opacity:1;transform:translateY(-3px)}}
+.wave{display:inline-flex;gap:2px;align-items:flex-end;height:12px;margin-left:8px}.wave i{width:3px;background:currentColor;border-radius:2px;animation:wv .7s infinite ease-in-out}
+.wave i:nth-child(2){animation-delay:.1s}.wave i:nth-child(3){animation-delay:.2s}.wave i:nth-child(4){animation-delay:.3s}@keyframes wv{0%,100%{height:3px}50%{height:12px}}
+#interim{color:var(--mut);font-style:italic;min-height:22px;display:block;margin-top:6px}#say{flex:1;min-width:0}
+#ents{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px;padding:0;list-style:none}
+#ents li{padding:7px 12px;border-radius:12px;background:rgba(19,136,8,.12);font-size:14px}#ents li b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}#ents li.none{background:none;color:var(--mut);padding:0}
+pre{white-space:pre-wrap;font-size:14px;max-height:420px;overflow:auto;background:var(--bg);padding:16px;border-radius:12px;border:1px solid var(--line)}
+
+/* tables & kpis */
+table{width:100%;border-collapse:collapse;font-size:15px}th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin:18px 0 22px}.kpi b{display:block;font:800 32px 'Bricolage Grotesque';margin-bottom:2px}
+.hb{display:flex;align-items:center;gap:12px;margin:8px 0}.hb span{width:150px;font-size:14px}.hb div{height:14px;background:var(--acc);border-radius:8px;min-width:6px;transition:width .6s}
+
+/* landing */
+body.land #side,body.land #app{display:none}#landing{display:none;min-height:100vh;background:#0B1220;color:#F8FAFC;padding:0 6vw 40px}body.land #landing{display:block}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:24px 0}.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center;padding:30px 0}
+.hero h1{font-size:clamp(38px,6vw,76px);line-height:1;margin:0 0 20px}.hero h1 em{font-style:normal;color:var(--acc)}.hero p{font-size:19px;color:#94A3B8;max-width:560px}
+.cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px}.cta button{padding:14px 26px;font-size:17px;border-radius:12px}.cta .pri{background:var(--acc);border-color:var(--acc);color:#111}
+#landing .ghost{color:#fff;border-color:#334155}.mock{background:#131C31;border:1px solid #233049;border-radius:20px;padding:26px}.mock .pillx{display:inline-block;padding:6px 16px;border-radius:99px;font-weight:800;color:#111;transition:background .5s}
+.mock .line{min-height:72px;margin:16px 0;font-size:19px}.langs{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.langs span{padding:5px 14px;border-radius:99px;border:1px solid #334155;font-size:14px}
+.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin:36px 0}.feats div{background:#131C31;border-radius:16px;padding:22px;color:#94A3B8}.feats b{display:block;font:800 21px 'Bricolage Grotesque';margin-bottom:8px;color:#F8FAFC}
+.help{color:#94A3B8;border-top:1px solid #233049;padding-top:20px}@media(max-width:820px){.hero{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<style id="skin">
+:root{--font:'Hanken Grotesk',system-ui,'Noto Sans',sans-serif;--disp:'Young Serif',Georgia,serif;--shield:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l8 3v6c0 5.5-3.4 9.3-8 11-4.6-1.7-8-5.5-8-11V5z'/%3E%3C/svg%3E")}
+body[data-theme]{--bg:#F7F3EC;--card:#FFFDF9;--ink:#1F1B16;--mut:#75695C;--line:#E7DFD2;--acc:#C2410C;--aci:#fff;--side:#FFFDF9;--sink:#1F1B16;--red:#B42318;--grn:#15803D;--sh:0 1px 2px rgba(31,27,22,.05),0 10px 26px -14px rgba(31,27,22,.16)}
+body[data-theme=dark]{--bg:#0E1420;--card:#151D2C;--ink:#EAEFF7;--mut:#8D9BB2;--line:#243047;--acc:#F59E0B;--aci:#1A1205;--side:#0A101B;--sink:#EAEFF7;--red:#F87171;--grn:#4ADE80;--sh:0 1px 2px rgba(0,0,0,.4)}
+body[data-theme=matcha]{--bg:#EEF2E3;--card:#F9FBF3;--ink:#1F2A17;--mut:#65775A;--line:#D8E2C6;--acc:#4D7C0F;--side:#E3EAD1;--sink:#1F2A17;--grn:#3F6212}
+body[data-theme=sakura]{--bg:#FDF1F4;--card:#FFFAFB;--ink:#3A1F29;--mut:#8E6673;--line:#F3D6DE;--acc:#D6336C;--side:#FBE4EA;--sink:#3A1F29}
+body[data-theme=mango]{--bg:#FFF6DD;--card:#FFFCF2;--ink:#3B2A08;--mut:#8A6D2F;--line:#F2E0A8;--acc:#E08A00;--aci:#2A1A00;--side:#FBEBB8;--sink:#3B2A08}
+body[data-theme=cyber]{--bg:#0A0714;--card:#120E22;--ink:#EDE9FE;--mut:#9A8FC4;--line:#2A2148;--acc:#22D3EE;--aci:#02222A;--side:#07050F;--sink:#EDE9FE;--red:#FB7185;--grn:#34D399;--sh:0 0 0 1px rgba(34,211,238,.08),0 10px 32px -12px rgba(139,92,246,.4)}
+body{font-family:var(--font);font-size:15px;-webkit-font-smoothing:antialiased;background:var(--bg);color:var(--ink)}
+h1,h2,.brand,.big,.kpi b,.feats b{font-family:var(--disp)!important;font-variation-settings:"opsz" 72}
+h1{font-size:34px;font-weight:600;letter-spacing:-.02em}h2{font-size:19px;font-weight:600;letter-spacing:-.01em}
+body[data-theme] button{background:var(--acc);border:1px solid var(--acc);color:var(--aci);border-radius:10px;font-size:14px;font-weight:600;padding:9px 16px}
+body[data-theme] button:hover:not(:disabled){filter:brightness(1.07)}
+body[data-theme] button.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+body[data-theme] button.ghost:hover:not(:disabled){background:color-mix(in srgb,var(--ink) 6%,transparent)}
+body[data-theme] button.rec{background:var(--red);border-color:var(--red);color:#fff}
+select,input[type=text]{border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+#burger{background:transparent!important;color:var(--sink)!important;border:1px solid var(--line)!important}
+#side{width:248px;background:var(--side);color:var(--sink);border-right:1px solid var(--line)}#side:before{display:none}
+#app{margin-left:248px;max-width:1240px}#side i svg{display:block}
+#side nav button{color:var(--sink);border-radius:10px;padding:10px 12px;opacity:.72}
+#side nav button:hover{background:color-mix(in srgb,var(--sink) 8%,transparent)}
+#side nav button.on{background:var(--acc);color:var(--aci);opacity:1}
+.card{border-radius:14px;box-shadow:var(--sh)}.pill{background:var(--card)}
+.card.warn{border:1px solid var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 18%,transparent)}
+.card.alert{background:color-mix(in srgb,var(--red) 9%,var(--card));color:var(--ink);border-color:var(--red);box-shadow:0 0 0 3px color-mix(in srgb,var(--red) 16%,transparent);animation:none}
+.alert #arc{stroke:var(--red)!important}.alert .chip{background:color-mix(in srgb,var(--red) 14%,transparent)}.gauge circle{stroke-width:8}
+.steps span.on{background:var(--acc);border-color:var(--acc);color:var(--aci);box-shadow:none}
+.m.scammer{background:color-mix(in srgb,var(--red) 9%,var(--card))}.m.honeypot{background:color-mix(in srgb,var(--acc) 15%,var(--card))}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);font-weight:600}
+pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+.sw{display:flex;flex-wrap:wrap;gap:8px}
+body[data-theme] .sw-b{background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:99px;padding:6px 14px 6px 8px;display:inline-flex;align-items:center;gap:8px;font-size:13px}
+.sw-b i{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--a) 50%,var(--b) 50%);border:1px solid rgba(0,0,0,.15)}
+body[data-theme] .sw-b.on{border-color:var(--acc)}
+#landing{background:var(--bg);color:var(--ink)}#landing .brand{font-size:22px;gap:10px}
+#landing .brand:before{content:"";width:26px;height:26px;background:var(--acc);-webkit-mask:var(--shield) center/contain no-repeat;mask:var(--shield) center/contain no-repeat}
+#landing .nav{border-bottom:1px solid var(--line)}
+#landing .hero h1{font-weight:600;letter-spacing:-.035em}#landing .hero h1 em{font-style:italic;color:var(--acc)}
+#landing .hero p,#landing .feats div,#landing .help{color:var(--mut)}
+#landing .mock,#landing .feats div{background:var(--card);border:1px solid var(--line);box-shadow:var(--sh)}
+#landing .feats b{color:var(--ink)}#landing .help{border-top-color:var(--line)}
+#landing .ghost{color:var(--ink);border-color:var(--line)}#landing .langs span{border-color:var(--line);color:var(--mut)}
+#landing .cta .pri{background:var(--acc);color:var(--aci)}
+@media(max-width:900px){.grid{grid-template-columns:1fr!important}}
+
+h1,h2,h3,.brand,.big,.kpi b,.feats b{font-weight:400!important;font-variation-settings:normal!important}
+h2:before{content:"";display:inline-block;width:6px;height:16px;border-radius:3px;background:var(--acc);margin-right:10px;vertical-align:-2px}
+#live .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:stretch}
+#live .col:first-child>.card:last-child,#live .col:last-child>.card:first-child{flex:1}#log{height:300px}
+#live .row{justify-content:space-between}
+.kpi{border-left:4px solid var(--acc)}tr:nth-child(even) td{background:color-mix(in srgb,var(--ink) 3%,transparent)}
+.feats div{border-top:3px solid var(--acc)!important}
+.auth{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0}
+.auth div{border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--mut);background:var(--card)}
+.auth b{display:block;color:var(--ink);font-size:15px;margin-bottom:2px}
+.rh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:2px solid var(--acc);padding-bottom:12px}.rh small{color:var(--mut);letter-spacing:.06em}.rh h3{margin:4px 0 0;font-size:24px}
+.lv{padding:5px 14px;border-radius:99px;font-weight:700;font-size:13px;background:color-mix(in srgb,var(--grn) 18%,transparent)}.lv.High{background:color-mix(in srgb,var(--red) 18%,transparent);color:var(--red)}.lv.Medium{background:color-mix(in srgb,var(--acc) 20%,transparent)}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}.facts div{background:color-mix(in srgb,var(--ink) 4%,transparent);border-radius:10px;padding:10px 12px}.facts small{display:block;color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.rpt h4{margin:18px 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--acc)}.rpt table th{width:150px;font-size:12px}
+.tl{margin:6px 0;padding:8px 12px;border-radius:10px;background:color-mix(in srgb,var(--acc) 12%,transparent)}.tl.scammer{background:color-mix(in srgb,var(--red) 9%,transparent)}.tl b{display:block;font-size:12px;opacity:.7}
+.modal{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(10,8,6,.55);backdrop-filter:blur(3px)}.modal[hidden],body:not(.land) .modal{display:none!important}
+.mbox{position:relative;max-width:820px;width:100%;max-height:92vh;overflow:auto;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:30px;box-shadow:0 30px 80px -20px rgba(0,0,0,.5)}
+.mbox h2:before{display:none}.mbox h2{font-size:28px;margin:4px 0 6px}
+.x{position:absolute;top:14px;right:14px;width:36px;height:36px;padding:0!important;border-radius:50%!important;font-size:20px!important}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:20px 0 10px}
+.plan{border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px}.plan.hot{border:2px solid var(--acc)}
+.plan em{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--acc)}.plan h3{margin:0;font-size:20px}.plan .amt{font:400 28px var(--disp)}.plan .amt small{font:500 13px var(--font);color:var(--mut)}
+.plan ul{margin:0;padding-left:18px;color:var(--mut);font-size:14px;flex:1}
+#toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 20px;border-radius:99px;font-size:14px;z-index:60;opacity:0;pointer-events:none;transition:opacity .25s}#toast.on{opacity:1}
+.foot{display:grid;grid-template-columns:2fr 1fr 1fr;gap:28px;border-top:1px solid var(--line);margin-top:40px;padding-top:26px;color:var(--mut);font-size:14px}.foot b{display:block;color:var(--ink);margin-bottom:6px}.foot a{color:inherit;display:block;margin:3px 0}.foot p{margin:0}
+.fine{grid-column:1/-1;font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+@media(max-width:700px){.foot{grid-template-columns:1fr}.facts{grid-template-columns:1fr}}
+@media print{body.printing *{visibility:hidden}body.printing .pr,body.printing .pr *{visibility:visible}body.printing{background:#fff!important}
+body.printing .pr{position:absolute;left:0;top:0;width:100%;border:0;box-shadow:none;background:#fff;--ink:#111;--mut:#555;--line:#ddd;--card:#fff;--bg:#fff;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}body.printing .pr .row,body.printing .pr>h2{display:none}}
 </style>
 </head>
-<body class="land">
+<body class="land" data-theme="light">
+
 <div id="landing">
-  <div class="nav"><span class="brand" style="font-size:22px">Scammer Ko Scam Kar</span><button class="ghost" id="lgo0">Open dashboard</button></div>
+  <div class="nav"><span class="brand" style="font-size:24px;margin:0">Scammer Ko Scam Kar</span><button class="ghost" id="lgo0">Open dashboard</button></div>
   <div class="hero">
     <div>
       <h1>Let them waste time on <em>Kamla Devi</em>, not on you.</h1>
-      <p>A live call guardian for India's digital-arrest, fake-CBI, courier and OTP scams. It spots the script as it happens, then an AI grandmother takes over the call and quietly collects the scammer's UPI ID, phone number and bank details for your police complaint.</p>
+      <p>A live guardian for India's digital-arrest, fake-CBI, courier and OTP scams. It spots the script as it happens, then an AI grandmother takes over the call, in your language, and quietly collects the scammer's UPI ID, phone number and bank details for your police complaint.</p>
       <div class="cta"><button class="pri" id="lgo">Launch Guardian</button><button class="ghost" id="ldemo">Watch a demo call</button></div>
+      <div class="langs" id="llangs"></div>
     </div>
-    <div class="mock"><span class="pill" id="mpill">12%</span> <small>threat score</small><div class="line" id="mline"></div><small id="mtag" style="color:#8fa6ba"></small></div>
+    <div class="mock"><span class="pillx" id="mpill">12%</span> <small>threat score</small><div class="line" id="mline"></div><small id="mtag" style="color:#94A3B8"></small></div>
   </div>
   <div class="feats">
     <div><b>Detect</b>Scores every sentence for fake authority, arrest threats, secrecy demands, urgency and payment pressure.</div>
@@ -113,187 +184,211 @@ th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
     <div><b>Report</b>One click turns the call into a draft for cybercrime.gov.in.</div>
   </div>
   <p class="help">Lost money to a scam? Call <b>1930</b> right away and file at cybercrime.gov.in. Real police, CBI or courts never demand payment or hold you on a video call.</p>
+  <footer class="foot"><div><b>Scammer Ko Scam Kar</b><p>An AI grandmother that keeps scammers talking while you stay safe. Built for India, in 10 languages.</p></div><div><b>Report fraud</b><a href="tel:1930">Helpline 1930</a><a href="https://cybercrime.gov.in" target="_blank" rel="noopener">cybercrime.gov.in</a><a href="https://sancharsaathi.gov.in" target="_blank" rel="noopener">Sanchar Saathi</a></div><div><b>Product</b><a href="#" id="fplans">Plans</a><a href="#" id="fgo">Open dashboard</a></div><p class="fine">Not affiliated with the Government of India or I4C. Speech recognition can mishear numbers; verify captured details before filing.</p></footer>
 </div>
+
 <aside id="side">
-  <div class="brand"><button id="burger" aria-label="Slide sidebar" style="width:auto;padding:8px 12px">☰</button><span class="lbl">Scammer Ko<br>Scam Kar</span></div>
+  <div class="brand"><button id="burger" aria-label="Toggle sidebar" style="padding:8px 12px;background:rgba(255,255,255,.12);border:0;color:#fff">☰</button><span class="lbl">Scammer Ko<br>Scam Kar</span></div>
   <nav>
-    <button class="tabbtn on" data-tab="live"><i>●</i><span class="lbl">Live Guardian</span></button>
-    <button class="tabbtn" data-tab="history"><i>◷</i><span class="lbl">Call History</span></button>
-    <button class="tabbtn" data-tab="trends"><i>◎</i><span class="lbl">Scam Trends</span></button>
-    <button class="tabbtn" data-tab="reports"><i>▤</i><span class="lbl">Reports</span></button>
-    <button class="tabbtn" data-tab="settings"><i>⚙</i><span class="lbl">Settings</span></button>
-  <button id="home"><i>⌂</i><span class="lbl">Home</span></button>
+    <button class="on" data-tab="live"><i><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></i><span class="lbl">Live Guardian</span></button>
+    <button data-tab="history"><i><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v5l3 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></i><span class="lbl">Call History</span></button>
+    <button data-tab="trends"><i><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V10M12 20V4M19 20v-7"/></svg></i><span class="lbl">Scam Trends</span></button>
+    <button data-tab="reports"><i><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7zM14 3v5h5"/></svg></i><span class="lbl">Reports</span></button>
+    <button data-tab="settings"><i><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9M15 5v4M9 15v4"/></svg></i><span class="lbl">Settings</span></button>
+    <button id="home" style="margin-top:18px"><i><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg></i><span class="lbl">Home</span></button>
   </nav>
 </aside>
-<div id="app">
+
+<main id="app">
 <section class="tab on" id="live">
-  <h1>Live Guardian</h1><p class="sub">Scam-call detection with an AI honeypot</p>
+  <div class="top">
+    <div><h1>Live Guardian</h1><p class="sub">Scam-call detection with an AI honeypot</p></div>
+    <div class="row" style="margin:0"><label class="pill"><select id="lang" style="border:0;padding:0 4px;background:none;font-weight:600"></select></label><span class="pill" id="vpill">Voice: checking…</span></div>
+  </div>
+  <div class="steps" id="steps"><span data-s="listen">1 · Listening</span><span data-s="think">2 · Analysing</span><span data-s="speak">3 · Speaking</span></div>
   <div class="grid">
     <div class="col">
       <div class="card" id="threat">
-        <div class="gauge">
-          <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="54"/><circle id="arc" cx="60" cy="60" r="54" stroke="hsl(130 70% 42%)" stroke-dasharray="339.3" stroke-dashoffset="339.3" transform="rotate(-90 60 60)"/></svg>
-          <div><span id="score">0%</span><small>threat score</small></div>
-        </div>
-        <div id="label">Listening…</div>
-        <div id="tactics"></div>
+        <div class="gauge"><svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="54"/><circle id="arc" cx="60" cy="60" r="54" stroke="hsl(130 70% 42%)" stroke-dasharray="339.3" stroke-dashoffset="339.3" transform="rotate(-90 60 60)"/></svg><div><span id="score" class="big">0%</span><small>threat score</small></div></div>
+        <div id="label">Listening…</div><div id="tactics"></div>
         <svg id="spark" viewBox="0 0 200 40" preserveAspectRatio="none"><line x1="0" x2="200" y1="16" y2="16"/><polyline id="line" points=""/></svg>
-        <div class="stats"><span>Mic</span><div class="bar"><div id="meter"></div></div><span>Pace <b id="pace">–</b></span></div>
-        <p><button id="honey" disabled>Turn on Honeypot</button> <span id="timer"></span></p>
-        <label><input type="checkbox" id="practice"> Practice mode: chat with Kamla at any threat level</label><br>
-        <small id="hint">Honeypot unlocks at 60% confidence.</small>
+        <div class="row"><span class="mut">Mic</span><div class="bar"><div id="meter"></div></div><span class="mut">Pace <b id="pace">–</b></span></div>
+        <div class="row"><button id="honey" disabled>Turn on Honeypot</button><span id="timer" class="mut"></span></div>
+        <label class="mut"><input type="checkbox" id="practice"> Practice mode: chat with Kamla at any threat level</label><br>
+        <small id="hint" class="mut">Honeypot unlocks at 60% confidence.</small>
       </div>
       <div class="card">
         <h2>Start a call</h2>
-        <div class="row"><button id="demo">Run random demo call</button> <button id="mic" class="ghost">Use microphone</button></div>
-        <div class="row">
-          <label>Language <select id="lang"><option value="en-IN">English</option><option value="hi-IN">Hindi</option></select></label>
-          <label>Listening <select id="engine"><option value="browser">Browser (fast)</option><option value="whisper">Whisper (accurate)</option></select></label>
-        </div>
-        <div id="status"></div><div id="eng">Voice: neural (falls back to browser voice)</div>
+        <div class="row"><button id="demo">Run demo call</button><button id="mic" class="ghost">Use microphone</button></div>
+        <div id="status" class="mut"></div>
       </div>
     </div>
     <div class="col">
-      <div class="card"><h2>Live transcript</h2><div id="log"></div><em id="interim"></em>
-        <div class="row"><input id="say" type="text" placeholder="Or type as the caller and press Enter" autocomplete="off"><button id="send">Send</button></div>
-        <small id="reply-eng"></small></div>
+      <div class="card">
+        <h2>Live transcript</h2><div id="log"></div><em id="interim"></em>
+        <div class="row"><input id="say" type="text" maxlength="400" placeholder="Type as the caller and press Enter" autocomplete="off"><button id="send">Send</button></div>
+        <small id="reply-eng" class="mut"></small>
+      </div>
       <div class="card">
         <h2>Details captured from the caller</h2>
-        <ul id="ents"><li>Nothing yet</li></ul>
+        <ul id="ents"><li class="none">Nothing yet</li></ul>
         <button id="rep" class="ghost">Generate cybercrime report</button>
       </div>
-      <div class="card" id="repbox" hidden><h2>Report</h2><pre id="repout"></pre><button id="dl">Download report</button></div>
+      <div class="card" id="repbox" hidden><h2>Report</h2><div id="repout" class="rpt"></div><div class="row"><button id="dl">Download PDF</button><button id="file" class="ghost">File on cybercrime.gov.in</button></div></div>
     </div>
   </div>
 </section>
-</div>
+
+<section class="tab" id="history"><h1>Call History</h1><p class="sub">Open a call to replay its transcript and captured details.</p>
+  <div class="card" style="margin-top:18px"><div id="hlist">Loading…</div></div><div class="card" id="hview" hidden style="margin-top:22px"></div></section>
+
+<section class="tab" id="trends"><h1>Scam Trends</h1><p class="sub">What your calls show, and the red flags to remember.</p>
+  <div class="kpis" id="kpis"></div>
+  <div class="grid" style="grid-template-columns:1fr 1fr"><div class="card"><h2>Scam types caught</h2><div id="bytype"></div></div><div class="card"><h2>Details captured</h2><div id="bykind"></div></div></div>
+  <div class="card" style="margin-top:22px"><h2>Red flags to remember</h2><ul><li>Real police, CBI or courts never arrest anyone over a phone or video call.</li><li>No agency asks you to move money to a "safe account" or to keep the call secret.</li><li>Banks never ask for your OTP, PIN or CVV.</li><li>Never install AnyDesk or QuickSupport for a stranger.</li></ul></div></section>
+
+<section class="tab" id="reports"><h1>Reports</h1><p class="sub">Turn any call into a draft complaint for cybercrime.gov.in.</p><div id="authtop"></div>
+  <div class="card" style="margin-top:18px"><div id="rlist">Loading…</div></div>
+  <div class="card" id="rview" hidden style="margin-top:22px"><h2>Report</h2><div id="rout" class="rpt"></div><div class="row"><button id="rdl">Download PDF</button><button id="rcopy" class="ghost">File on cybercrime.gov.in</button></div></div></section>
+
+<section class="tab" id="settings"><h1>Settings</h1><p class="sub">Appearance, voice and listening.</p>
+  <div class="grid" style="grid-template-columns:1fr 1fr">
+    <div class="card"><h2>Appearance & behaviour</h2>
+      <div class="row"><span class="mut">Theme</span><select id="s-theme" hidden><option value="light">Chai</option><option value="dark">Midnight</option><option value="matcha">Matcha</option><option value="sakura">Sakura</option><option value="mango">Mango</option><option value="cyber">Cyber</option></select><div class="sw" id="sw"></div></div>
+      <div class="row"><label><input type="checkbox" id="s-auto"> Switch honeypot on automatically at 60%</label></div>
+      <div class="row"><label><input type="checkbox" id="s-voice"> Speak aloud (caller and Kamla Devi)</label></div></div>
+    <div class="card"><h2>Voice & listening</h2>
+      <div class="row"><label>Voice <select id="s-tts"><option value="auto">Auto (best available)</option><option value="sarvam">Sarvam Bulbul (Indian, best)</option><option value="edge">Microsoft Indian neural (free)</option><option value="elevenlabs">ElevenLabs</option><option value="kokoro">Kokoro (English, local)</option><option value="browser">Browser voice</option></select></label></div>
+      <div class="row"><label>Listening <select id="s-listen"><option value="auto">Auto (best available)</option><option value="server">Server (Sarvam / Whisper)</option><option value="browser">Browser</option></select></label></div>
+      <div class="row"><button id="tk" class="ghost">Test Kamla</button><button id="tc" class="ghost">Test caller</button></div></div></div>
+  <div class="card" style="margin-top:22px"><h2>System status</h2><div id="sysinfo">Checking…</div><div class="row"><button id="clr" class="ghost" style="color:var(--red);border-color:var(--red)">Delete all saved calls</button></div></div></section>
+<footer class="foot"><div><b>Scammer Ko Scam Kar</b><p>Live scam-call guardian. Calls and reports are stored only on this device.</p></div><div><b>Report fraud</b><a href="tel:1930">Helpline 1930</a><a href="https://cybercrime.gov.in" target="_blank" rel="noopener">cybercrime.gov.in</a></div><div><b>Also useful</b><a href="https://sancharsaathi.gov.in" target="_blank" rel="noopener">Sanchar Saathi</a><a href="https://www.npci.org.in" target="_blank" rel="noopener">NPCI</a></div><p class="fine">Not affiliated with the Government of India. Reports are AI-drafted; check every detail before filing.</p></footer>
+</main>
+
+<div class="modal" id="sub" hidden role="dialog" aria-modal="true" aria-labelledby="subt"><div class="mbox"><button class="x ghost" id="subx" aria-label="Close">&times;</button>
+<small class="mut">PLANS</small><h2 id="subt">Keep every family phone protected</h2><p class="sub">Start free. Upgrade when your family or organisation needs more. Cancel anytime.</p>
+<div class="plans">
+<div class="plan"><h3>Free</h3><div class="amt">₹0</div><ul><li>Live scam detection</li><li>Honeypot in English and Hindi</li><li>Last 5 calls saved</li></ul><button class="ghost" data-plan="Free">Continue free</button></div>
+<div class="plan hot"><em>MOST POPULAR</em><h3>Family</h3><div class="amt">₹199<small> /month</small></div><ul><li>Up to 5 phones</li><li>All 10 languages</li><li>PDF complaint reports</li><li>Weekly scam alerts</li></ul><button data-plan="Family">Join waitlist</button></div>
+<div class="plan"><h3>Sentinel</h3><div class="amt">₹499<small> /month</small></div><ul><li>25 seats for NGOs and senior-care homes</li><li>Shared dashboard</li><li>Priority Indian voices</li></ul><button class="ghost" data-plan="Sentinel">Join waitlist</button></div></div>
+<p class="mut" style="margin:0;font-size:13px">Payments are not live yet. Joining the waitlist reserves these prices.</p></div></div>
+<div id="toast"></div>
 <script>
-const $=id=>document.getElementById(id),THRESH=.6,API_BASE='';  // API_BASE: set only if the frontend is hosted apart from the backend
-let sid,honey=false,micOn=false,speaking=false,demoing=false,chain=Promise.resolve(),t0,tick,last='',hist=[],ttsOK=true,peak=0,stream,recog,shown=0,raf;
-const sleep=ms=>new Promise(r=>setTimeout(r,ms)),pick=a=>a[Math.floor(Math.random()*a.length)];
-const api=(u,b,m)=>fetch(API_BASE+u,{method:m||(b?'POST':'GET'),headers:{'Content-Type':'application/json'},body:b&&JSON.stringify(b)}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()});
-const setStatus=t=>$('status').textContent=t;
-
-/* sidebar + tabs */
-$('burger').onclick=()=>document.body.classList.toggle('min');
-if(innerWidth<900)document.body.classList.add('min');
+const $=id=>document.getElementById(id),THRESH=.6,sleep=ms=>new Promise(r=>setTimeout(r,ms)),pick=a=>a[Math.random()*a.length|0];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const fmt=s=>s>=60?`${Math.floor(s/60)}m ${Math.round(s%60)}s`:`${Math.round(s)}s`;
-const when=t=>new Date(t*1000).toLocaleString([],{dateStyle:'medium',timeStyle:'short'});
-const save=(txt,name)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));a.download=name;a.click()};
-const S=Object.assign({lang:'en-IN',engine:'browser',auto:true,voice:true},JSON.parse(localStorage.getItem('S')||'{}'));
-const T={
- history:['Call History','Every analysed call. Open one to replay the transcript and captured details.','<div class="card"><div id="hlist">Loading…</div></div><div class="card" id="hview" hidden style="margin-top:20px"></div>'],
- trends:['Scam Trends','What your calls show, and the red flags to remember.','<div class="kpis" id="kpis"></div><div class="grid"><div class="card"><h2>Scam types caught</h2><div id="bytype"></div></div><div class="card"><h2>Details captured</h2><div id="bykind"></div></div></div><div class="card" style="margin-top:20px"><h2>Red flags to remember</h2><ul><li>Real police, CBI or courts never arrest anyone over a phone or video call.</li><li>No agency asks you to move money to a "safe account" or to keep the call secret.</li><li>Banks never ask for your OTP, PIN or CVV.</li><li>Never install AnyDesk or QuickSupport for a stranger.</li></ul></div>'],
- reports:['Reports','Turn any call into a draft complaint for cybercrime.gov.in.','<div class="card"><div id="rlist">Loading…</div></div><div class="card" id="rview" hidden style="margin-top:20px"><h2>Report</h2><pre id="rout"></pre><div class="row"><button id="rcopy">Copy</button><button id="rdl" class="ghost">Download</button></div></div>'],
- settings:['Settings','Saved in this browser.','<div class="card"><h2>Preferences</h2><div class="row"><label>Language <select id="s-lang"><option value="en-IN">English</option><option value="hi-IN">Hindi</option></select></label> <label>Listening <select id="s-engine"><option value="browser">Browser (fast)</option><option value="whisper">Whisper (accurate)</option></select></label></div><div class="row"><label><input type="checkbox" id="s-auto"> Switch the honeypot on automatically at 60%</label></div><div class="row"><label><input type="checkbox" id="s-voice"> Speak aloud (caller and Kamla Devi)</label></div><div class="row"><label>Browser voice <select id="s-vname"></select></label> <button id="vt" class="ghost">Test voice</button></div></div><div class="card" style="margin-top:20px"><h2>System status</h2><div id="sysinfo">Checking…</div><div class="row"><button id="clr" class="ghost">Delete all saved calls</button></div></div>']
-};
-Object.entries(T).forEach(([id,[t,d,h]])=>{const s=document.createElement('section');s.className='tab';s.id=id;s.innerHTML=`<h1>${t}</h1><p class="sub">${d}</p>${h}`;$('app').append(s)});
-const KEYMAP={lang:'lang','s-lang':'lang',engine:'engine','s-engine':'engine'},store=()=>localStorage.setItem('S',JSON.stringify(S));
-function applyS(){['lang','s-lang'].forEach(i=>$(i).value=S.lang);['engine','s-engine'].forEach(i=>$(i).value=S.engine);$('s-auto').checked=S.auto;$('s-voice').checked=S.voice}
-Object.keys(KEYMAP).forEach(i=>$(i).onchange=e=>{S[KEYMAP[i]]=e.target.value;store();applyS()});
-[['s-auto','auto'],['s-voice','voice']].forEach(([i,k])=>$(i).onchange=e=>{S[k]=e.target.checked;store()});
-applyS();
-function pickVoice(who,text){
-  const hi=/[\u0900-\u097F]/.test(text),vs=speechSynthesis.getVoices(),want=hi?'hi':'en';
-  if(who==='honeypot'&&S.vname){const v=vs.find(v=>v.name===S.vname);if(v)return v}
-  const sc=v=>(/natural|neural|online|premium|enhanced/i.test(v.name)?4:0)+(/veena|lekha|neerja|swara|heera|rishi|prabhat|madhur/i.test(v.name)?3:0)+(v.lang.replace('_','-')===(hi?'hi-IN':'en-IN')?3:0)
-    +(who==='honeypot'?(/veena|lekha|neerja|swara|heera|female|samantha|zira/i.test(v.name)?2:0):(/rishi|prabhat|madhur|ravi|male|daniel|david/i.test(v.name)?2:0));
-  return vs.filter(v=>v.lang.toLowerCase().startsWith(want)).sort((a,b)=>sc(b)-sc(a))[0]||null}
-function fillVoices(){const vs=speechSynthesis.getVoices().filter(v=>/^(en|hi)/i.test(v.lang));
-  $('s-vname').innerHTML='<option value="">Automatic (best available)</option>'+vs.map(v=>`<option value="${esc(v.name)}">${esc(v.name)} (${esc(v.lang)})</option>`).join('');$('s-vname').value=S.vname||''}
-speechSynthesis.onvoiceschanged=fillVoices;fillVoices();
-$('s-vname').onchange=e=>{S.vname=e.target.value;store()};
-$('vt').onclick=()=>speak('Namaste beta, this is Kamla Devi. Can you speak a little slowly? My hearing is weak.','honeypot');
-const bars=(el,o)=>{const m=Math.max(1,...Object.values(o));el.innerHTML=Object.keys(o).length?Object.entries(o).map(([k,v])=>`<div class="hb"><span>${esc(k)}</span><div style="width:${v/m*60}%"></div><b>${v}</b></div>`).join(''):'Nothing yet.'};
-const rows=(r,cols,btn)=>r.length?`<table><tr><th>When</th><th>Type</th><th>Threat</th>${cols[0]}<th></th></tr>${r.map(s=>`<tr><td>${when(s.started)}</td><td>${esc(s.label)}</td><td>${Math.round(s.score*100)}%</td>${cols[1](s)}<td>${btn(s)}</td></tr>`).join('')}</table>`:'No calls yet. Run a demo call first.';
-const LOAD={
- async history(){$('hlist').innerHTML=rows(await api('/api/sessions'),['<th>Msgs</th><th>Captured</th>',s=>`<td>${s.msgs}</td><td>${s.ents}</td>`],s=>`<button data-v="${s.id}">View</button> <button class="ghost" data-d="${s.id}">Delete</button>`)},
- async trends(){const s=await api('/api/stats');
-  $('kpis').innerHTML=[[s.total,'calls analysed'],[s.flagged,'scams flagged'],[Math.round(s.avg*100)+'%','average threat'],[s.captured,'details captured'],[fmt(s.wasted),'scammer time wasted']].map(([n,l])=>`<div class="card kpi"><b>${n}</b>${l}</div>`).join('');
-  bars($('bytype'),s.by_label);bars($('bykind'),s.bykind)},
- async reports(){$('rlist').innerHTML=rows(await api('/api/sessions'),['',()=>''],s=>`<button data-g="${s.id}">Generate report</button>`)},
- async settings(){const s=await api('/api/status?ping=1');$('sysinfo').innerHTML=Object.entries(s.lines).map(([k,v])=>`<p>${esc(k)}: <b>${esc(v)}</b></p>`).join('')}};
-async function view(id){const d=await api('/api/session/'+id),v=$('hview');v.hidden=false;
-  v.replaceChildren(Object.assign(document.createElement('h2'),{textContent:'Transcript'}));
-  d.messages.forEach(m=>{const x=document.createElement('div');x.className='m '+m.role;const b=document.createElement('b');b.textContent=m.role==='scammer'?'Caller':'Kamla Devi (AI)';x.append(b,document.createElement('br'),m.text);v.append(x)});
-  const u=document.createElement('ul');u.style.marginTop='14px';
-  (d.entities.length?d.entities:[{kind:'No details captured',value:''}]).forEach(e=>u.append(Object.assign(document.createElement('li'),{textContent:e.value?`${e.kind}: ${e.value}`:e.kind})));
-  v.append(u);v.scrollIntoView({behavior:'smooth'})}
-$('app').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;
-  try{
-  if(b.dataset.v)view(b.dataset.v);
-  if(b.dataset.d){await api('/api/session/'+b.dataset.d,null,'DELETE');$('hview').hidden=true;LOAD.history()}
-  if(b.dataset.g){last=(await api('/api/report/'+b.dataset.g)).report;$('rout').textContent=last;$('rview').hidden=false;$('rview').scrollIntoView({behavior:'smooth'})}
-  if(b.id==='rcopy')navigator.clipboard.writeText($('rout').textContent);
-  if(b.id==='rdl')save($('rout').textContent,'cyber-report.txt');
-  if(b.id==='clr'&&confirm('Delete every saved call?')){await api('/api/sessions',null,'DELETE');await reset();LOAD.settings()}
-  }catch{setStatus('Something went wrong. Check the terminal running uvicorn.')}});
-document.querySelectorAll('.tabbtn').forEach(b=>b.onclick=()=>{
-  document.querySelectorAll('.tabbtn,.tab').forEach(e=>e.classList.remove('on'));
-  b.classList.add('on');$(b.dataset.tab).classList.add('on');if(LOAD[b.dataset.tab])LOAD[b.dataset.tab]().catch(()=>{})});
+const fmt=s=>s>=60?`${Math.floor(s/60)}m ${Math.round(s%60)}s`:`${Math.round(s)}s`,when=t=>new Date(t*1000).toLocaleString([],{dateStyle:'medium',timeStyle:'short'});
+const api=async(u,b,m)=>{const r=await fetch(u,{method:m||(b?'POST':'GET'),headers:{'Content-Type':'application/json'},body:b&&JSON.stringify(b)});if(!r.ok)throw new Error(r.status);return r.json()};
+const status=t=>$('status').textContent=t,download=(txt,name)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt]));a.download=name;a.click()};
 
-/* randomised demo calls */
-const num=n=>Array.from({length:n},()=>Math.floor(Math.random()*10)).join('');
-const vars=()=>({name:pick(['Rajesh Kumar','Vikram Singh','Amit Deshmukh','Sanjay Verma','Arvind Rao']),badge:'MH'+num(5),
-  city:pick(['Mumbai','Delhi','Hyderabad','Pune','Bengaluru']),amt:pick(['twenty-eight thousand','forty-two thousand','sixty-five thousand','one lakh ten thousand']),
-  upi:pick(['rajesh.cbi','verify.desk','police.help','kyc.support','secure.pay'])+num(2)+'@'+pick(['okaxis','ybl','paytm','oksbi']),
-  phone:pick(['9','8','7','6'])+num(9),acct:num(12),ifsc:pick(['SBIN','HDFC','ICIC','UTIB'])+'0'+num(6),
-  link:'http://'+pick(['cbi-verify','kyc-update','trai-check','secure-pay'])+'-'+pick(['india','gov','help'])+'.'+pick(['xyz','top','online'])});
-const SCEN=[
- ["Hello, this is Inspector {name} from {city} Police, badge {badge}. An illegal parcel under your Aadhaar number was seized at customs.",
-  "The parcel contains MDMA and fake passports. A CBI warrant is issued in your name. You are under digital arrest, do not disconnect this call.",
-  "Do not tell anyone in your family, or you will be arrested immediately. Keep your video on.",
-  "To prove your innocence, transfer {amt} rupees to the RBI safe account. Send it to UPI ID {upi} right now.",
-  "If UPI fails, use account number {acct}, IFSC {ifsc}. My number is {phone}."],
- ["This is FedEx customs. A package in your name with drugs was seized at {city} airport.",
-  "The narcotics police will register a case and arrest you today. Stay on the line, this is confidential.",
-  "Pay the clearance fee of {amt} rupees immediately to UPI ID {upi} and the case will be closed.",
-  "Open {link} and enter your card details. Call me back on {phone}."],
- ["This is TRAI. Your SIM card will be blocked in two hours because of illegal activity from your number.",
-  "To avoid disconnection, complete KYC immediately. Officer {name} will guide you, do not tell anyone.",
-  "Install the QuickSupport app and read me the OTP you receive right now.",
-  "Pay a verification amount to UPI ID {upi}. Our helpline is {phone}."],
- ["This is the electricity board. Your bill is pending and your power supply will be disconnected tonight.",
-  "Officer {name} here. Install the AnyDesk app and share the code so I can update your account.",
-  "Read me the OTP right now, or we will block your connection. Send {amt} rupees to {upi}.",
-  "You can also open {link}. Call {phone} if there is any problem."],
- ["Good morning sir, I am calling from the head office of your bank. Your KYC has expired and your account will be blocked today.",
-  "Officer {name} will verify you. Please share the OTP right now to stop legal action.",
-  "Now transfer {amt} rupees to the safe account, UPI ID {upi}, as a refundable verification amount.",
-  "Details: account number {acct}, IFSC {ifsc}. Call me on {phone} once done."]
-];
+const S={lang:'en-IN',tts:'auto',listen:'auto',theme:'light',auto:true,voice:true,...JSON.parse(localStorage.getItem('S')||'{}')};
+let LANGS=[{code:'en-IN',name:'English',hello:'Hello?'},{code:'hi-IN',name:'हिन्दी',hello:'हैलो?'}],CAPS={stt:'none'};
+let sid,honey=false,micOn=false,busy=false,demoing=false,mutedUntil=0,chain=Promise.resolve(),stream,timerId,t0,shown=0,raf,hist=[],last='';
+const save=()=>localStorage.setItem('S',JSON.stringify(S));
 
-/* voice out: neural voice from backend, browser voice as fallback */
-async function speak(text,who){
-  if(!S.voice){await sleep(400);return 0}
-  speaking=true;setStatus(who==='honeypot'?'Kamla Devi is speaking…':'Caller is speaking…');
-  if(recog)try{recog.stop()}catch{}
-  const say=text.replace(/\d{4,}/g,m=>m.split('').join(' '));let dur=0;
-  try{
-    if(!ttsOK)throw 0;
-    const r=await fetch(`${API_BASE}/api/tts?who=${who}&lang=${/[\u0900-\u097F]/.test(text)?'hi':'en'}&text=${encodeURIComponent(say)}`);
-    if(!r.ok)throw new Error((await r.json().catch(()=>({}))).detail||r.status);
-    const a=new Audio(URL.createObjectURL(await r.blob()));
-    await new Promise((ok,no)=>{a.onended=ok;a.onerror=no;a.onloadedmetadata=()=>dur=a.duration;a.play().catch(no)});
-    $('eng').textContent='Voice: neural (edge-tts)';
-  }catch(err){
-    ttsOK=false;$('eng').textContent='Voice: browser voice ('+((err&&err.message)||'neural voice off')+')';
-    const s=performance.now();
-    await new Promise(ok=>{const u=new SpeechSynthesisUtterance(say),v=pickVoice(who,text);if(v){u.voice=v;u.lang=v.lang}else u.lang=/[\u0900-\u097F]/.test(text)?'hi-IN':'en-IN';
-      u.pitch=who==='honeypot'?1:.9;u.rate=who==='honeypot'?.92:1.05;u.onend=u.onerror=ok;speechSynthesis.speak(u)});
-    dur=(performance.now()-s)/1000;
-  }
-  speaking=false;setStatus(micOn?'Listening…':'');
-  if(micOn&&recog)try{recog.start()}catch{}
-  return dur;
+/* ---------- settings ---------- */
+function applyS(){
+  document.body.dataset.theme=S.theme;document.querySelectorAll("[data-th]").forEach(b=>b.classList.toggle("on",b.dataset.th===S.theme));
+  $('s-theme').value=S.theme;$('s-tts').value=S.tts;$('s-listen').value=S.listen;$('s-auto').checked=S.auto;$('s-voice').checked=S.voice;$('lang').value=S.lang;
+}
+[['s-theme','theme'],['s-tts','tts'],['s-listen','listen'],['lang','lang']].forEach(([id,k])=>$(id).onchange=e=>{S[k]=e.target.value;save();applyS();if(micOn&&k!=='theme'){Ear.stop();Ear.start()}});
+[['s-auto','auto'],['s-voice','voice']].forEach(([id,k])=>$(id).onchange=e=>{S[k]=e.target.checked;save()});
+function fillLangs(){
+  $('lang').innerHTML=LANGS.map(l=>`<option value="${l.code}">${esc(l.name)}</option>`).join('');
+  $('llangs').innerHTML=LANGS.map(l=>`<span>${esc(l.name)}</span>`).join('');
+  if(!LANGS.some(l=>l.code===S.lang))S.lang='en-IN';applyS();
 }
 
-/* threat gauge: animated count, colour shift, sparkline */
-function paint(v){$('score').textContent=Math.round(v*100)+'%';
-  const a=$('arc');a.style.strokeDashoffset=339.3*(1-v);a.style.stroke=`hsl(${130-130*v} 70% 42%)`}
+/* ---------- pipeline indicator ---------- */
+function stage(s){document.querySelectorAll('#steps span').forEach(e=>e.classList.toggle('on',e.dataset.s===s))}
+const idle=()=>stage(micOn?'listen':'');
+
+/* ---------- voice output ---------- */
+const Voice={
+  audio:new Audio(),stopped:false,
+  split(t){ // sentence-level chunks; ellipses stay inside a chunk so pauses sound natural
+    const p=t.split(/(?<=[!?।]|[^.]\.)\s+/),out=[];
+    for(const s of p){if(out.length&&out[out.length-1].length<40)out[out.length-1]+=' '+s;else out.push(s)}
+    return out.filter(Boolean)},
+  async clip(text,who,lang){
+    const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),20000);
+    try{const r=await fetch('/api/tts?'+new URLSearchParams({text,who,lang,engine:S.tts}),{signal:ctl.signal});
+      if(!r.ok)throw new Error((await r.json().catch(()=>({}))).detail||r.status);
+      return{url:URL.createObjectURL(await r.blob()),engine:r.headers.get('X-TTS-Engine')||'server'}}
+    finally{clearTimeout(to)}},
+  browser(text,who,lang){return new Promise(ok=>{
+    const u=new SpeechSynthesisUtterance(text),vs=speechSynthesis.getVoices().filter(v=>v.lang.replace('_','-').startsWith(lang.slice(0,2)));
+    const v=vs.find(v=>v.lang.replace('_','-')===lang)||vs[0];if(v)u.voice=v;u.lang=v?v.lang:lang;u.rate=who==='honeypot'?.9:1;u.onend=u.onerror=ok;speechSynthesis.speak(u)})},
+  stop(){this.stopped=true;this.audio.pause();speechSynthesis.cancel();this.cur&&this.cur()},   // cur() releases the sentence we were waiting on
+  // Fetches every sentence in parallel, plays them in order. onStart fires the moment sound begins,
+  // so the transcript bubble appears exactly when the voice starts.
+  async say(text,who,onStart,lang=S.lang){
+    if(!S.voice){onStart&&onStart();await sleep(500);return}
+    busy=true;stage('speak');this.stopped=false;
+    const parts=this.split(text),clips=S.tts==='browser'?[]:parts.map(p=>this.clip(p,who,lang).catch(e=>({err:e.message})));
+    let engine='',started=false;
+    for(let i=0;i<parts.length&&!this.stopped;i++){
+      const c=clips[i]?await clips[i]:null;
+      if(!started){started=true;onStart&&onStart()}
+      if(c&&c.url){engine=c.engine;await new Promise(ok=>{const a=this.audio;this.cur=ok;a.src=c.url;a.onended=a.onerror=ok;a.play().catch(ok)});URL.revokeObjectURL(c.url)}
+      else{engine='Browser voice'+(c&&c.err?` (${c.err})`:'');await this.browser(parts[i],who,lang)}
+    }
+    if(!started&&onStart&&!this.stopped)onStart();
+    $('vpill').textContent='Voice: '+engine;busy=false;mutedUntil=Date.now()+500;idle()}
+};
+
+/* ---------- listening: browser recogniser or server (Sarvam / Whisper) with silence detection ---------- */
+const useServer=()=>S.listen==='server'||(S.listen==='auto'&&CAPS.stt!=='none');
+const Ear={
+  async start(){
+    try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}catch{return alert('Microphone permission is needed.')}
+    micOn=true;$('mic').textContent='Stop listening';$('mic').className='rec';stage('listen');
+    const srv=useServer();status(srv?`Listening (${CAPS.stt})…`:'Listening (browser)…');
+    this.vad(srv);if(!srv)this.browser()},
+  stop(){micOn=false;try{this.rec&&this.rec.abort()}catch{};this.rec=null;stream&&stream.getTracks().forEach(t=>t.stop());
+    $('mic').textContent='Use microphone';$('mic').className='ghost';$('meter').style.width='0';status('');stage('')},
+  // level meter always; utterance recording only in server mode. Sends the moment speech stops (0.8s of silence).
+  vad(record){
+    const ctx=new AudioContext(),an=ctx.createAnalyser(),buf=new Uint8Array(1024);an.fftSize=1024;ctx.createMediaStreamSource(stream).connect(an);
+    let rec=null,parts=[],lastVoice=0,startAt=0,noise=.02;
+    const finish=()=>{const r=rec,dur=performance.now()-startAt-800;rec=null;r.onstop=()=>Ear.send(new Blob(parts,{type:r.mimeType}),dur);r.stop()};
+    (function loop(){
+      if(!micOn){ctx.close();return}
+      an.getByteTimeDomainData(buf);let m=0;for(const v of buf)m=Math.max(m,Math.abs(v-128)/128);
+      $('meter').style.width=Math.min(100,m*220)+'%';
+      const now=performance.now(),muted=busy||Date.now()<mutedUntil,voiced=m>Math.max(.06,noise*3)&&!muted;
+      if(!rec&&!voiced)noise=noise*.95+m*.05;
+      if(record){
+        if(voiced){lastVoice=now;if(!rec){parts=[];rec=new MediaRecorder(stream);rec.ondataavailable=e=>parts.push(e.data);rec.start();startAt=now}}
+        if(rec&&(muted||now-lastVoice>800||now-startAt>14000))muted?(rec.onstop=null,rec.stop(),rec=null):finish()}
+      requestAnimationFrame(loop)})()},
+  async send(blob,dur){
+    if(blob.size<3000||dur<350||busy)return;
+    $('interim').textContent='Transcribing…';stage('think');
+    try{const r=await fetch('/api/transcribe?lang='+S.lang,{method:'POST',headers:{'Content-Type':blob.type||'audio/webm'},body:blob});
+      if(!r.ok)throw new Error((await r.json().catch(()=>({}))).detail||r.status);
+      const j=await r.json(),t=(j.text||'').trim();$('interim').textContent='';
+      if(t){const w=t.split(/\s+/).length;chain=chain.then(()=>turn(t,w>=6?w/(dur/1000)*60:0))}else idle()}
+    catch(e){$('interim').textContent='';status('Listening failed: '+e.message+'. Switch Listening to Browser in Settings.');idle()}},
+  browser(){
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return status('Browser listening needs Chrome or Edge. Use Server listening instead.');
+    const r=this.rec=new SR();r.lang=S.lang;r.continuous=true;r.interimResults=true;let text='',timer,ts=0;
+    const commit=()=>{clearTimeout(timer);const t=text.trim(),w=t.split(/\s+/).length,sec=(performance.now()-ts)/1000;text='';ts=0;$('interim').textContent='';
+      if(t)chain=chain.then(()=>turn(t,w>=6?w/sec*60:0))};
+    r.onresult=e=>{
+      if(busy||Date.now()<mutedUntil){text='';$('interim').textContent='';return}   // ignore what the speakers just said; no stop/start dance
+      let fin='',tmp='';for(let i=e.resultIndex;i<e.results.length;i++){const x=e.results[i];x.isFinal?fin+=x[0].transcript:tmp+=x[0].transcript}
+      if(!ts)ts=performance.now();text=fin||tmp;$('interim').textContent=tmp;clearTimeout(timer);
+      if(fin)commit();else timer=setTimeout(()=>{commit();try{r.abort()}catch{}},900)};  // don't wait for Chrome's slow "final": 0.9s of silence is enough
+    r.onend=()=>{if(micOn&&this.rec===r)setTimeout(()=>{try{r.start()}catch{}},150)};
+    r.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed')status('Speech service blocked. Allow the microphone, or use Server listening.')};
+    r.start()}
+};
+$('mic').onclick=async()=>{if(micOn)return Ear.stop();await reset();Ear.start()};
+
+/* ---------- threat display ---------- */
+function paint(v){$('score').textContent=Math.round(v*100)+'%';const a=$('arc');a.style.strokeDashoffset=339.3*(1-v);a.style.stroke=`hsl(${130-130*v} 70% 42%)`}
 function animate(to){cancelAnimationFrame(raf);const from=shown,s=performance.now();
-  const step=t=>{const k=Math.min(1,(t-s)/900);shown=from+(to-from)*(1-Math.pow(1-k,3));paint(shown);if(k<1)raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)}
+  const step=t=>{const k=Math.min(1,(t-s)/800);shown=from+(to-from)*(1-Math.pow(1-k,3));paint(shown);if(k<1)raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)}
 function render(a,upd){
   animate(a.score);$('label').textContent=a.label;
   $('threat').className='card '+(a.score>=THRESH?'alert':a.score>=.3?'warn':'');
@@ -302,87 +397,147 @@ function render(a,upd){
   $('line').setAttribute('points',hist.map((v,i)=>`${n>1?i*200/(n-1):0},${40-v*40}`).join(' '));
   $('honey').disabled=a.score<THRESH&&!honey&&!$('practice').checked;
   $('hint').textContent=a.score>=THRESH?'Fraud detected. Honeypot ready.':'Honeypot unlocks at 60% confidence.';
-  const es=a.entities.length?a.entities:[{kind:'Nothing yet',value:''}];
-  $('ents').replaceChildren(...es.map(e=>Object.assign(document.createElement('li'),{textContent:e.value?`${e.kind}: ${e.value}`:e.kind})));
+  $('ents').replaceChildren(...(a.entities.length?a.entities:[{kind:'',value:'Nothing yet'}]).map(e=>{const li=document.createElement('li');
+    if(e.kind){const b=document.createElement('b');b.textContent=e.kind;li.append(b,e.value)}else{li.className='none';li.textContent=e.value}return li}));
 }
-function addMsg(role,text){
-  const d=document.createElement('div');d.className='m '+role;const b=document.createElement('b');
-  b.textContent=role==='scammer'?'Caller':'Kamla Devi (AI)';d.append(b,document.createElement('br'),text);$('log').append(d);$('log').scrollTop=1e9}
-function setHoney(on){
-  honey=on;$('honey').textContent=on?'Honeypot on: AI is answering':'Turn on Honeypot';clearInterval(tick);$('timer').textContent='';
-  if(on){t0=Date.now();tick=setInterval(()=>{const s=Math.floor((Date.now()-t0)/1000);$('timer').textContent=`Caller engaged ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`},1000)}}
+function addMsg(role,text,thinking){
+  const d=document.createElement('div');d.className='m '+role;const h=document.createElement('small');h.textContent=role==='scammer'?'Caller':'Kamla Devi (AI)';
+  const b=document.createElement('span');thinking?b.innerHTML='<span class="dots"><i></i><i></i><i></i></span>':b.textContent=text;d.append(h,b);$('log').append(d);$('log').scrollTop=1e9;return b}
+const wave=b=>{b.parentElement.querySelector('small').insertAdjacentHTML('beforeend','<span class="wave"><i></i><i></i><i></i><i></i></span>');return()=>b.parentElement.querySelector('.wave')?.remove()};
+function setHoney(on){honey=on;$('honey').textContent=on?'Honeypot on: AI is answering':'Turn on Honeypot';clearInterval(timerId);$('timer').textContent='';
+  if(on){t0=Date.now();timerId=setInterval(()=>{const s=(Date.now()-t0)/1000|0;$('timer').textContent=`Caller engaged ${s/60|0}:${String(s%60).padStart(2,'0')}`},1000)}}
 $('honey').onclick=()=>setHoney(!honey);
+$('practice').onchange=()=>{$('honey').disabled=(hist[hist.length-1]||0)<THRESH&&!honey&&!$('practice').checked};
 
-async function handle(text,pace=0){
-  if(!text)return;addMsg('scammer',text);
-  if(pace){$('pace').textContent=Math.round(pace)+' wpm'}
-  try{
-    const a=await api('/api/analyze',{sid,text,pace:Math.round(pace)});render(a);
+/* ---------- one conversation turn ---------- */
+let tn=0;const analyse=(text,pace,lang)=>{tn++;stage('think');if(pace)$('pace').textContent=Math.round(pace)+' wpm';
+  return api('/api/analyze',{sid,text,pace:Math.round(pace),lang}).then(a=>{render(a);return a})};
+async function reply(analysis,text){
+  try{const a=await analysis;
     if(!honey&&($('practice').checked||(a.score>=THRESH&&(demoing||S.auto))))setHoney(true);
-    const en=()=>api('/api/enrich',{sid,text,pace:Math.round(pace)}).then(x=>render(x,true)).catch(()=>{});
-    if(honey){const r=await api('/api/honeypot',{sid,text,lang:$('lang').value});addMsg('honeypot',r.reply);
-      $('reply-eng').textContent='Reply engine: '+(r.engine==='offline'?'offline rules'+(r.why?` (${r.why})`:''):r.engine);
-      const e=en();await speak(r.reply,'honeypot');await e}
-    else en();
-  }catch{setStatus('Server error. Check the terminal running uvicorn.')}
-}
+    const enrich=()=>{const my=tn;return api('/api/enrich',{sid,text,lang:S.lang}).then(x=>{if(my===tn)render(x,true)}).catch(()=>{})};
+    if(!honey){enrich();return idle()}
+    const b=addMsg('honeypot','',true);
+    const r=await api('/api/honeypot',{sid,text,lang:S.lang});let off;
+    $('reply-eng').textContent='Reply engine: '+(r.engine==='offline'?'offline rules'+(r.why?` (${r.why})`:''):r.engine);
+    await Voice.say(r.reply,'honeypot',()=>{b.textContent=r.reply;off=wave(b)});
+    off&&off();enrich()}
+  catch{document.querySelectorAll('#log .dots').forEach(d=>d.closest('.m').remove());status('Server error. Check the terminal running uvicorn.')}
+  finally{idle()}}
+const turn=(text,pace=0)=>{addMsg('scammer',text);return reply(analyse(text,pace,S.lang),text)};
+const typed=()=>{const t=$('say').value.trim();if(t){$('say').value='';chain=chain.then(()=>turn(t))}};
+$('send').onclick=typed;$('say').onkeydown=e=>{if(e.key==='Enter')typed()};
+
 async function reset(){
-  sid=(await api('/api/session',{})).sid;$('log').replaceChildren();setHoney(false);hist=[];ttsOK=true;
+  sid=(await api('/api/session',{})).sid;$('log').replaceChildren();setHoney(false);hist=[];
   render({score:0,label:'Listening…',tactics:[],entities:[]});$('pace').textContent='–';$('repbox').hidden=true}
 
+/* ---------- demo call ---------- */
+const num=n=>Array.from({length:n},()=>Math.random()*10|0).join('');
+const vars=()=>({name:pick(['Rajesh Kumar','Vikram Singh','Amit Deshmukh','Sanjay Verma','Arvind Rao']),badge:'MH'+num(5),city:pick(['Mumbai','Delhi','Hyderabad','Pune','Bengaluru']),
+  amt:pick(['twenty-eight thousand','forty-two thousand','sixty-five thousand','one lakh ten thousand']),amt_hi:pick(['अठाईस हज़ार','बयालीस हज़ार','पैंसठ हज़ार','एक लाख दस हज़ार']),
+  upi:pick(['rajesh.cbi','verify.desk','police.help','kyc.support'])+num(2)+'@'+pick(['okaxis','ybl','paytm','oksbi']),phone:pick(['9','8','7','6'])+num(9),acct:num(12),
+  ifsc:pick(['SBIN','HDFC','ICIC','UTIB'])+'0'+num(6),link:'http://'+pick(['cbi-verify','kyc-update','trai-check'])+'-'+pick(['india','gov','help'])+'.'+pick(['xyz','top','online'])});
+const SCEN={en:[
+ ["Hello, this is Inspector {name} from {city} Police, badge {badge}. An illegal parcel under your Aadhaar number was seized at customs.",
+  "The parcel contains MDMA and fake passports. A CBI warrant is issued in your name. You are under digital arrest, do not disconnect this call.",
+  "Do not tell anyone in your family, or you will be arrested immediately. Keep your video on.",
+  "To prove your innocence, transfer {amt} rupees to the RBI safe account. Send it to UPI ID {upi} right now.",
+  "If UPI fails, use account number {acct}, IFSC {ifsc}. My number is {phone}."],
+ ["This is FedEx customs. A package in your name with drugs was seized at {city} airport.",
+  "The narcotics police will register a case and arrest you today. Stay on the line, this is confidential.",
+  "Pay the clearance fee of {amt} rupees immediately to UPI ID {upi} and the case will be closed.",
+  "Open {link} and enter your card details. Call me back on {phone}."]],
+ hi:[["हैलो, मैं इंस्पेक्टर {name} बोल रहा हूँ, {city} पुलिस से, बैज नंबर {badge}। आपके आधार नंबर से जुड़ा एक पार्सल कस्टम में पकड़ा गया है।",
+  "उस पार्सल में ड्रग्स और नकली पासपोर्ट मिले हैं। सीबीआई ने आपके नाम वारंट निकाला है। आप डिजिटल अरेस्ट में हैं, कॉल मत काटिए।",
+  "यह बात किसी को मत बताइए, वरना तुरंत गिरफ्तार कर लिया जाएगा। अपना वीडियो चालू रखिए।",
+  "अपनी बेगुनाही साबित करने के लिए {amt_hi} रुपये RBI सेफ अकाउंट में ट्रांसफर कीजिए। अभी यूपीआई आईडी {upi} पर भेजिए।",
+  "अगर यूपीआई न चले तो खाता नंबर {acct}, आईएफएससी {ifsc}। मेरा नंबर {phone} है।"]]};
 $('demo').onclick=async()=>{
-  if(micOn)$('mic').click();
-  await reset();demoing=true;$('demo').disabled=true;
-  const v=vars(),lines=pick(SCEN).map(l=>l.replace(/\{(\w+)\}/g,(_,k)=>v[k]));
-  for(const l of lines){const d=await speak(l,'scammer');await handle(l,d?l.split(' ').length/d*60:0);await sleep(700)}
-  demoing=false;$('demo').disabled=false;setStatus('Demo finished. Generate the report below.');
+  if(demoing){demoing=false;Voice.stop();return}
+  if(micOn)Ear.stop();
+  await reset();demoing=true;$('demo').textContent='Stop demo';
+  const cl=S.lang==='hi-IN'?'hi-IN':'en-IN',v=vars(),lines=pick(SCEN[cl.slice(0,2)]).map(l=>l.replace(/\{(\w+)\}/g,(_,k)=>v[k]));
+  if(cl!==S.lang)status('The demo caller speaks '+(cl==='en-IN'?'English':'Hindi')+'; Kamla answers in your chosen language.');
+  for(const l of lines){
+    if(!demoing)break;
+    let analysis;
+    // bubble + analysis start the instant the caller's voice starts, so the gauge climbs while they speak
+    await Voice.say(l,'scammer',()=>{addMsg('scammer',l);analysis=analyse(l,0,cl)},cl);
+    if(!demoing)break;
+    await reply(analysis,l);await sleep(500)}
+  demoing=false;$('demo').textContent='Run demo call';status('Demo finished. Generate the report below.')};
+
+/* ---------- reports ---------- */
+$('rep').onclick=async()=>{try{last=(await api('/api/report/'+sid)).report;$('repout').textContent=last;$('repbox').hidden=false;$('repbox').scrollIntoView({behavior:'smooth'})}catch{status('Could not build the report.')}};
+$('dl').onclick=()=>download(last,`cyber-report-${sid}.txt`);
+
+/* ---------- other tabs ---------- */
+const bars=(el,o)=>{const m=Math.max(1,...Object.values(o));el.innerHTML=Object.keys(o).length?Object.entries(o).map(([k,v])=>`<div class="hb"><span>${esc(k)}</span><div style="width:${v/m*60}%"></div><b>${v}</b></div>`).join(''):'Nothing yet.'};
+const table=(r,extra,btn)=>r.length?`<table><tr><th>When</th><th>Type</th><th>Threat</th>${extra[0]}<th></th></tr>${r.map(s=>`<tr><td>${when(s.started)}</td><td>${esc(s.label)}</td><td>${Math.round(s.score*100)}%</td>${extra[1](s)}<td>${btn(s)}</td></tr>`).join('')}</table>`:'No calls yet. Run a demo call first.';
+const LOAD={
+  async history(){$('hlist').innerHTML=table(await api('/api/sessions'),['<th>Msgs</th><th>Captured</th>',s=>`<td>${s.msgs}</td><td>${s.ents}</td>`],s=>`<button data-v="${s.id}">View</button> <button class="ghost" data-d="${s.id}">Delete</button>`)},
+  async trends(){const s=await api('/api/stats');
+    $('kpis').innerHTML=[[s.total,'calls analysed'],[s.flagged,'scams flagged'],[Math.round(s.avg*100)+'%','average threat'],[s.captured,'details captured'],[fmt(s.wasted),'scammer time wasted']].map(([n,l])=>`<div class="card kpi"><b>${n}</b>${l}</div>`).join('');
+    bars($('bytype'),s.by_label);bars($('bykind'),s.by_kind)},
+  async reports(){$('rlist').innerHTML=table(await api('/api/sessions'),['',()=>''],s=>`<button data-g="${s.id}">Generate report</button>`)},
+  async settings(){const s=await api('/api/status?ping=1');$('sysinfo').innerHTML=Object.entries(s.lines).map(([k,v])=>`<p style="margin:6px 0">${esc(k)}: <b>${esc(v)}</b></p>`).join('')}
 };
+async function view(id){
+  const d=await api('/api/session/'+id),v=$('hview');v.hidden=false;v.replaceChildren(Object.assign(document.createElement('h2'),{textContent:'Transcript'}));
+  d.messages.forEach(m=>{const x=document.createElement('div');x.className='m '+m.role;const h=document.createElement('small');h.textContent=m.role==='scammer'?'Caller':'Kamla Devi (AI)';x.append(h,m.text);v.append(x)});
+  const u=document.createElement('ul');u.id='ents';u.style.marginTop='14px';
+  (d.entities.length?d.entities:[{kind:'',value:'No details captured'}]).forEach(e=>{const li=document.createElement('li');if(e.kind){const b=document.createElement('b');b.textContent=e.kind;li.append(b,e.value)}else{li.className='none';li.textContent=e.value}u.append(li)});
+  v.append(u);v.scrollIntoView({behavior:'smooth'})}
+$('app').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;
+  try{
+    if(b.dataset.v)view(b.dataset.v);
+    if(b.dataset.d){await api('/api/session/'+b.dataset.d,null,'DELETE');$('hview').hidden=true;LOAD.history()}
+    if(b.dataset.g){await showReport(b.dataset.g,'rout');$('rview').hidden=false;$('rview').scrollIntoView({behavior:'smooth'})}
+    if(b.id==='rcopy')fileIt();
+    if(b.id==='rdl')printPdf();
+    if(b.id==='clr'&&confirm('Delete every saved call?')){await api('/api/sessions',null,'DELETE');await reset();LOAD.settings()}
+    if(b.id==='tk'){const l=LANGS.find(x=>x.code===S.lang);Voice.say(l.hello,'honeypot',null)}
+    if(b.id==='tc')Voice.say('This is Inspector Rajesh Kumar from Mumbai Police. Do not disconnect the call.','scammer',null,'en-IN')
+  }catch{status('Something went wrong. Check the terminal running uvicorn.')}});
+document.querySelectorAll('#side nav [data-tab]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#side nav [data-tab],.tab').forEach(e=>e.classList.remove('on'));b.classList.add('on');$(b.dataset.tab).classList.add('on');
+  if(LOAD[b.dataset.tab])LOAD[b.dataset.tab]().catch(()=>{})});
+$('burger').onclick=()=>document.body.classList.toggle('min');if(innerWidth<900)document.body.classList.add('min');
 
-/* live mic: level meter + two listening engines */
-function meter(){
-  const ctx=new AudioContext(),an=ctx.createAnalyser(),buf=new Uint8Array(an.fftSize);ctx.createMediaStreamSource(stream).connect(an);
-  (function loop(){if(!micOn){ctx.close();$('meter').style.width='0';return}
-    an.getByteTimeDomainData(buf);let m=0;for(const v of buf)m=Math.max(m,Math.abs(v-128)/128);
-    peak=Math.max(peak,m);$('meter').style.width=Math.min(100,m*220)+'%';requestAnimationFrame(loop)})()}
-function recordLoop(){   // Whisper: 5-second chunks, silence is never sent
-  if(!micOn)return;peak=0;const parts=[],r=new MediaRecorder(stream);
-  r.ondataavailable=e=>parts.push(e.data);
-  r.onstop=async()=>{const ok=!speaking&&peak>.08;recordLoop();if(!ok)return;
-    try{const res=await fetch(`${API_BASE}/api/transcribe?lang=${$('lang').value.slice(0,2)}`,{method:'POST',body:new Blob(parts,{type:'audio/webm'})});
-      if(!res.ok)throw 0;const t=((await res.json()).text||'').trim();
-      if(t.split(' ').length>1)chain=chain.then(()=>handle(t))}
-    catch{setStatus('Whisper unavailable: pip install faster-whisper, or switch Listening to Browser.')}};
-  r.start();setTimeout(()=>r.state==='recording'&&r.stop(),5000)}
-function startRecog(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR)return setStatus('Browser listening needs Chrome or Edge. Use Whisper instead.');
-  recog=new SR();recog.lang=$('lang').value;recog.continuous=true;recog.interimResults=true;let ts=0;
-  recog.onresult=e=>{let tmp='';
-    for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(!ts)ts=performance.now();
-      if(r.isFinal){const t=r[0].transcript.trim(),w=t.split(/\s+/).length,sec=(performance.now()-ts)/1000;ts=0;$('interim').textContent='';
-        chain=chain.then(()=>handle(t,w>=6?w/sec*60:0))}else tmp=r[0].transcript}
-    if(tmp)$('interim').textContent=tmp};
-  recog.onend=()=>{if(micOn&&!speaking)try{recog.start()}catch{}};recog.start()}
-$('mic').onclick=async()=>{
-  if(micOn){micOn=false;if(recog)recog.stop();stream&&stream.getTracks().forEach(t=>t.stop());$('mic').textContent='Use microphone';setStatus('');return}
-  try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}catch{return alert('Microphone permission is needed.')}
-  await reset();micOn=true;$('mic').textContent='Stop listening';setStatus('Listening…');meter();
-  $('engine').value==='whisper'?recordLoop():startRecog()};
-
-$('rep').onclick=async()=>{
-  try{const r=await api('/api/report/'+sid);last=r.report;$('repout').textContent=last;$('repbox').hidden=false;$('repbox').scrollIntoView({behavior:'smooth'})}
-  catch{setStatus('Could not build the report. Check the terminal.')}};
-$('dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([last],{type:'text/plain'}));a.download=`cyber-report-${sid}.txt`;a.click()};
-const cur=()=>hist[hist.length-1]||0;
-$('practice').onchange=()=>{$('honey').disabled=cur()<THRESH&&!honey&&!$('practice').checked};
-const sendTyped=()=>{const t=$('say').value.trim();if(t){$('say').value='';chain=chain.then(()=>handle(t))}};
-$('send').onclick=sendTyped;$('say').onkeydown=e=>{if(e.key==='Enter')sendTyped()};
-const MOCK=[[12,'#1f7a4d','"Hello, this is Inspector Rajesh from Mumbai Police."','Listening'],[58,'#c98a0a','"A parcel under your Aadhaar was seized with illegal drugs."','Fake authority + parcel'],[91,'#D7263D','"You are under digital arrest. Do not tell anyone."','Isolation + arrest threat'],[98,'#D7263D','Kamla: "Beta, what parcel? Say your UPI ID slowly, I am writing."','Honeypot engaged']];
-let mi=0;const mock=()=>{const m=MOCK[mi++%MOCK.length];$('mpill').textContent=m[0]+'%';$('mpill').style.background=m[1];$('mline').textContent=m[2];$('mtag').textContent=m[3]};
-mock();setInterval(mock,2400);
+/* ---------- landing ---------- */
+const MOCK=[[12,'#10B981','"Hello, this is Inspector Rajesh from Mumbai Police."','Listening'],[58,'#F59E0B','"A parcel under your Aadhaar was seized with illegal drugs."','Fake authority + parcel'],[91,'#EF4444','"You are under digital arrest. Do not tell anyone."','Isolation + arrest threat'],[98,'#EF4444','Kamla: "Beta, what parcel? Say your UPI ID slowly, I am writing."','Honeypot engaged']];
+let mi=0;const mock=()=>{const m=MOCK[mi++%MOCK.length];$('mpill').textContent=m[0]+'%';$('mpill').style.background=m[1];$('mline').textContent=m[2];$('mtag').textContent=m[3]};mock();setInterval(mock,2400);
 const enter=()=>document.body.classList.remove('land');
 $('lgo').onclick=$('lgo0').onclick=enter;$('ldemo').onclick=()=>{enter();$('demo').click()};$('home').onclick=()=>document.body.classList.add('land');
-reset();
+
+
+/* ---------- reports, pdf, filing, plans ---------- */
+const toast=t=>{const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(e.t);e.t=setTimeout(()=>e.classList.remove('on'),3500)};
+const AUTH=`<div class="auth"><div><b>Helpline 1930</b>National cyber-fraud helpline. If money was sent, call at once so the bank can try to freeze it.</div><div><b>cybercrime.gov.in</b>National Cyber Crime Reporting Portal (I4C, Ministry of Home Affairs). File the complaint and keep the acknowledgement number.</div><div><b>Sanchar Saathi</b>sancharsaathi.gov.in: report the scam number (Chakshu) and check SIMs issued in your name.</div><div><b>Keep evidence</b>Screenshots, transaction IDs, call logs and this report.</div></div>`;
+$('authtop').innerHTML=AUTH;
+async function showReport(id,target){
+  const [d,all]=await Promise.all([api('/api/session/'+id),api('/api/sessions')]),s=all.find(x=>x.id===id)||{label:'Unknown',score:0,started:Date.now()/1000},pct=Math.round(s.score*100),lv=pct>=60?'High':pct>=30?'Medium':'Low';
+  const ents=d.entities.length?d.entities.map(e=>`<tr><th>${esc(e.kind)}</th><td>${esc(e.value)}</td></tr>`).join(''):'<tr><td>No details captured</td></tr>';
+  last=`CYBERCRIME COMPLAINT DRAFT\nDate: ${when(s.started)}\nType: ${s.label}\nThreat: ${pct}%\n\nCAPTURED DETAILS\n`+(d.entities.map(e=>`- ${e.kind}: ${e.value}`).join('\n')||'- none')+'\n\nTRANSCRIPT\n'+d.messages.map(m=>`${m.role==='scammer'?'Caller':'Kamla'}: ${m.text}`).join('\n');
+  $(target).innerHTML=`<header class="rh"><div><small>DRAFT COMPLAINT · NATIONAL CYBER CRIME REPORTING PORTAL</small><h3>Suspected ${esc(s.label)} call</h3></div><span class="lv ${lv}">${lv} risk · ${pct}%</span></header><div class="facts"><div><small>Date</small>${when(s.started)}</div><div><small>Case ref</small>${esc(id)}</div><div><small>Messages</small>${d.messages.length}</div></div><h4>Details captured from the caller</h4><table>${ents}</table><h4>Call transcript</h4>${d.messages.map(m=>`<p class="tl ${m.role}"><b>${m.role==='scammer'?'Caller':'Kamla Devi (AI)'}</b>${esc(m.text)}</p>`).join('')}<h4>Where to report</h4>${AUTH}`}
+const printPdf=()=>{const el=[$('repout'),$('rout')].find(e=>e.offsetParent);if(!el)return;el.closest('.card').classList.add('pr');document.body.classList.add('printing');toast('Choose "Save as PDF" in the print dialog');setTimeout(()=>window.print(),350)};
+window.onafterprint=()=>{document.body.classList.remove('printing');document.querySelectorAll('.pr').forEach(e=>e.classList.remove('pr'))};
+const fileIt=async()=>{try{await navigator.clipboard.writeText(last)}catch{}window.open('https://cybercrime.gov.in','_blank','noopener');toast('Report copied. Paste it into the complaint form on cybercrime.gov.in.')};
+$('rep').onclick=async()=>{try{await showReport(sid,'repout');$('repbox').hidden=false;$('repbox').scrollIntoView({behavior:'smooth'})}catch{toast('Could not build the report.')}};
+$('dl').onclick=printPdf;$('file').onclick=fileIt;
+const openSub=()=>{$('sub').hidden=false},closeSub=()=>{$('sub').hidden=true};
+$('subx').onclick=closeSub;$('sub').onclick=e=>{if(e.target.id==='sub')closeSub()};document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSub()});
+$('sub').querySelectorAll('[data-plan]').forEach(b=>b.onclick=()=>{closeSub();toast(b.dataset.plan==='Free'?'Enjoy the free plan.':'You are on the '+b.dataset.plan+' waitlist.')});
+$('home').addEventListener('click',()=>setTimeout(openSub,350));$('fplans').onclick=e=>{e.preventDefault();openSub()};$('fgo').onclick=e=>{e.preventDefault();enter()};
+setTimeout(openSub,500);
+/* ---------- boot ---------- */
+const THEMES=[['light','Chai','#C2410C','#F7F3EC'],['dark','Midnight','#F59E0B','#0E1420'],['matcha','Matcha','#4D7C0F','#EEF2E3'],['sakura','Sakura','#D6336C','#FDF1F4'],['mango','Mango','#E08A00','#FFF6DD'],['cyber','Cyber','#22D3EE','#0A0714']];
+$('sw').innerHTML=THEMES.map(([v,n,a,b])=>`<button type="button" class="sw-b" data-th="${v}" style="--a:${a};--b:${b}"><i></i>${n}</button>`).join('');
+$('sw').onclick=e=>{const b=e.target.closest('[data-th]');if(b){S.theme=b.dataset.th;save();applyS()}};
+fillLangs();applyS();reset();
+api('/api/languages').then(l=>{LANGS=l;fillLangs()}).catch(()=>{});
+api('/api/status').then(s=>{CAPS=s.caps;$('vpill').textContent='Voice: '+s.caps.tts_label}).catch(()=>{$('vpill').textContent='Voice: server offline'});
 </script>
 </body>
 </html>
