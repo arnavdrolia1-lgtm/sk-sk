@@ -4,7 +4,8 @@ A live guardian for India's phone scams — fake "digital arrest," bogus CBI/pol
 
 ## Why
 
-Digital-arrest and impersonation scams work because they isolate the victim (*"don't tell anyone," "stay on video," "you'll be arrested"*) and rush them into a payment before anyone else can intervene. This project flips that dynamic: instead of a real person being isolated and rushed, it's the scammer who ends up stuck on a long, unproductive call with an AI decoy, while the real details needed for a police complaint get captured automatically.
+Digital-arrest and impersonation scams work because they isolate the victim (*"don't tell anyone," "stay on video," "you'll be arrested"*) and rush them into a payment before anyone else can intervene. This project flips that dynamic: instead of a real person being isolated and rushed, it's the scammer who ends up stuck on a long, unproductive call with an AI decoy, while the real details needed for a police complaint get captured automatically and critically.
+
 
 ## How it works
 
